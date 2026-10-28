@@ -209,23 +209,18 @@
   function title(root) {
     var banner =
       '<div class="banner">' +
-        /* THE FIRST SENTENCE ON THE BOARD, and it used to be a gotcha:
-           "Your own FAQ names strict adherence as the biggest driver of
-           outcome — and nothing measures it."
+        /* THE FIRST SENTENCE ON THE BOARD, so it states the shared premise
+           and nothing else. An earlier draft opened by citing the practice's
+           own published material back at them and then declaring that they
+           measure nothing. Both were wrong for an opening line: the first is
+           an argument you make against someone rather than for them, and a
+           forwarded link puts it in front of people it was not written for;
+           the second is untrue, because the booklet IS the measurement and
+           the whole of section 1 is built on respecting that.
 
-           Two things wrong with that, in the opening line of a document
-           asking a practice to hire you. "Your own FAQ" turns the practice's
-           own words back on them, which is an argument you make against
-           someone, not for them — and a forwarded link puts it in front of
-           people whose FAQ it is not. Then "nothing measures it" tells a
-           practice that keeps a careful written booklet, page by page, that
-           they measure nothing. The booklet IS the measurement; the whole of
-           section 1 is built on respecting that.
-
-           The hinge is kept and the accusation is dropped: adherence decides
-           the outcome, the booklet already records it, and the gap is that
-           nobody can add it up. That is a problem to solve together rather
-           than a failure to point at. */
+           The hinge is the same and the accusation is gone: adherence
+           decides the outcome, the booklet already records it, and the gap
+           is that nobody can add it up. A problem to solve together. */
         '<h1 class="banner__title">A.R.T. Daily &amp; Practice' +
           '<small>Strict adherence is the biggest driver of outcome. The ' +
             'booklet records it a day at a time &mdash; nothing adds it ' +

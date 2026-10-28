@@ -303,8 +303,9 @@
     ['Session', '8 hours',
       'Then re-authenticate. A practice machine is often a shared one.'],
     ['Password', '12 characters, breach-checked',
-      /* "No rotation theatre" called a policy many clinics are required to
-         run a piece of theatre, on a frame read by the people running it. */
+      /* Says what the rule is and why, without characterising the scheduled
+         password expiry many clinics are required to run — this frame is
+         read by the people who run it. */
       'Rejected if the string appears in a public breach corpus. No scheduled ' +
       'expiry — forcing a change on a timer pushes people towards weaker ' +
       'passwords.'],
