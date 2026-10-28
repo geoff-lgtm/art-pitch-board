@@ -467,17 +467,44 @@
     ];
   }
 
+  /* THE BOX THAT ACTUALLY CLIPS, which is not the frame.
+
+     Testing containment against the frame was the hole that let "DATE RANGE"
+     get sliced through the middle of its own letters: the plate was inside
+     the frame by a wide margin, but the mocked browser window it sits in has
+     overflow:hidden, and that card's top edge cut it. Any ancestor between
+     the control and the frame that does not have overflow:visible clips, so
+     the usable box is the INTERSECTION of all of them with the frame. */
+  function clipBox(el, frame, fr) {
+    var box = { left: fr.left, top: fr.top, right: fr.right, bottom: fr.bottom };
+    var n = el.parentNode;
+    while (n && n.nodeType === 1) {
+      var cs = window.getComputedStyle(n);
+      if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible' || cs.clipPath !== 'none') {
+        var r = n.getBoundingClientRect();
+        if (r.left > box.left) box.left = r.left;
+        if (r.top > box.top) box.top = r.top;
+        if (r.right < box.right) box.right = r.right;
+        if (r.bottom < box.bottom) box.bottom = r.bottom;
+      }
+      if (n === frame) break;
+      n = n.parentNode;
+    }
+    return box;
+  }
+
   function placeOne(el, frame, fr, rects, gap, sc) {
     var p = plateOf(el);
     if (!p) return false;
     var r = el.getBoundingClientRect();
+    var cb = clipBox(el, frame, fr);
     var pw = p.w * sc, ph = p.h * sc;
     var cand = corners(r, pw, ph, gap);
     for (var i = 0; i < cand.length; i++) {
       var c = cand[i];
       var box = { left: r.left + c.dx, top: c.top, right: r.left + c.dx + pw, bottom: c.top + ph };
-      if (box.left < fr.left || box.right > fr.right) continue;
-      if (box.top < fr.top || box.bottom > fr.bottom) continue;
+      if (box.left < cb.left || box.right > cb.right) continue;
+      if (box.top < cb.top || box.bottom > cb.bottom) continue;
       if (hits(box, rects)) continue;
       if (c.side) el.setAttribute('data-hint', 'below');
       else el.removeAttribute('data-hint');

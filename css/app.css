@@ -2554,6 +2554,41 @@ button.chip[aria-pressed='true'] {
   bottom: var(--hint-b, 100%);
 }
 .world--hints [data-live][data-hint='below']::after { top: 100%; bottom: auto; margin: 4px 0 0; }
+
+/* ============================================================================
+   THE RING IS THE AFFORDANCE. THE WORDS ARE ON HOVER.
+   ----------------------------------------------------------------------------
+   These plates used to print at rest, and at rest they were the loudest thing
+   on the board: a 12px letterspaced solid-coral badge is visually heavier than
+   the control it points at — "TABLE VIEW" is three times the size of the ghost
+   button it names — so on a cream-and-navy document they read as error badges
+   rather than as invitations, and they dragged the eye to the least important
+   control on every frame they appeared on.
+
+   The coral RING already says a thing is live, in the board's own palette, at
+   the weight of a hairline. That is the whole signal. The words only have to
+   answer "what does it do", and the moment a reader asks that is the moment
+   they point at it. So the plate fades in on hover and on keyboard focus, and
+   the board at rest is just the document.
+
+   This also retires an entire class of defect by construction: nothing that is
+   invisible at rest can collide with a sentence in a screenshot. The placement
+   engine in app.js still runs — it decides WHERE the plate appears when it is
+   asked for, and it is still the thing that keeps a hovered plate inside its
+   clipping box. */
+.world--hints [data-live]:not(input):not(select):not(textarea)::after {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.world--hints [data-live]:not(input):not(select):not(textarea):hover::after,
+.world--hints [data-live]:not(input):not(select):not(textarea):focus-visible::after,
+.world--hints [data-live]:not(input):not(select):not(textarea):focus-within::after {
+  opacity: 1;
+}
+/* A reader who prefers less motion gets the same behaviour without the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .world--hints [data-live]:not(input):not(select):not(textarea)::after { transition: none; }
+}
 /* a repeated control is ringed ONCE. Seven ringed steppers in one pane reads as a
    debug overlay, not as an invitation — the first row carries ring and label for all
    seven, exactly as the roster's one label covers sixteen rows. */
