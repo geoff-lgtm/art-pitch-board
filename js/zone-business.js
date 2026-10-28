@@ -9,7 +9,7 @@
      team       §8  the credential bar, full width, set in type
      scope      §8  what v1 includes, against the eight sections — and out
      pricing    §8  the figures, then what the $500 a month actually covers
-     terms      §8  ownership, support, exclusions, and "For the room"
+     terms      §8  ownership, support and exclusions
 
    THE ONE RULE THAT GOVERNS THIS FILE (SPEC rule 13). Four commercial facts
    were given and may be stated as fact:
@@ -649,7 +649,7 @@
           'never decides it.') +
       draft('<p class="meta"><strong>Not quoted.</strong> The line between in and out ' +
             'is drawn from this board and from what has been discussed so far. It is a ' +
-            'proposal for the room to argue with, not a signed scope.</p>');
+            'proposal for the A.R.T. team to change, not a signed scope.</p>');
 
     root.innerHTML =
       head('Scope', 'What v1 includes',
@@ -854,35 +854,8 @@
      stacked would be the grid of identical cards this board exists to avoid,
      and a single provisional document is also the more honest object.
 
-     Then "For the room" on warm paper: the five open questions from NOTES §D,
-     unchanged and unanswered. They are the only thing on the frame that is not
-     a proposal, because a question cannot be wrong. */
+     The frame is ownership, support and exclusions, and nothing else. */
 
-  /* `tag` is the claim the sentence above this list makes — four change the
-     build, the fifth changes the contract — marked on each item rather than
-     left for the reader to infer. */
-  var ROOM = [
-    { tag: 'build',
-      q: 'Spine tapping &mdash; cadence, who performs it, and whether it is prescribed ' +
-         'per allergen or per client.' },
-    { tag: 'build',
-      q: 'Drops &mdash; what they are, which dose unit, and whether they are prescribed ' +
-         'per allergen or per client.' },
-    { tag: 'build',
-      q: 'The communal library &mdash; who owns submitted content, and is attribution ' +
-         'shown to other families?' },
-    { tag: 'build',
-      q: 'Does the owner want to approve communal content, or is practitioner approval ' +
-         'enough?' },
-    { tag: 'contract',
-      q: 'Carried over: the commercial shape beyond this contract, and whether a ' +
-         'practitioner would rather open on the roster or on today&rsquo;s schedule.' }
-  ];
-
-  var ROOM_TAG = {
-    build: { word: 'changes the build', chip: 'chip--peri' },
-    contract: { word: 'changes the contract', chip: 'chip--coral' }
-  };
 
   function terms(root) {
     var ownership =
@@ -903,8 +876,7 @@
           clause('', 'One channel, no ticket queue',
                  'Proposed: the practice talks to the two people who built it.') +
           clause('', 'Anything that stops a family logging a dose comes first',
-                 'Proposed: same-day for that, the next working day for everything else. ' +
-                 'Response times are not quoted yet and are for the room.') +
+                 'Proposed: same-day for that, the next working day for everything else.') +
         '</ul>' +
       '</div>';
 
@@ -922,27 +894,16 @@
         '</ul>' +
       '</div>';
 
-    var room = ROOM.map(function (item, i) {
-      var n = i + 1 < 10 ? '0' + (i + 1) : String(i + 1);
-      var t = ROOM_TAG[item.tag];
-      return '<li class="list__item">' +
-               '<p><span class="mono">' + n + '</span> ' + item.q +
-                 ' <span class="chip ' + t.chip + '">' + t.word + '</span></p>' +
-             '</li>';
-    }).join('');
-
-    var body =
-      draft(ownership + support + excluded) +
-      '<div class="card card--paper" style="margin-top:18px">' +
-        eyebrow('For the room') +
-        '<p class="meta" style="margin-top:5px">Four of these change the build. ' +
-          'The fifth changes the contract. None of them is ours to answer.</p>' +
-        '<ul class="list" style="margin-top:8px">' + room + '</ul>' +
-      '</div>';
+    /* "For the room" is GONE. It was a block of our own open questions put in
+       front of the client as a to-do list, headed with a piece of internal
+       jargon and tagged with chips that meant nothing to a reader — plus a
+       line, "none of them is ours to answer", that reads as ducking. The
+       questions still exist in NOTES.md as meeting prep, which is where a
+       list of things WE need to ask belongs. A proposal states terms. */
+    var body = draft(ownership + support + excluded);
 
     root.innerHTML =
-      head('Terms', 'Terms, and for the room',
-           'Nothing here was quoted, so every term is marked as a proposal.') +
+      head('Terms', 'Terms', 'Nothing here was quoted, so every term is a proposal.') +
       zbody(body);
   }
 

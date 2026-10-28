@@ -327,7 +327,7 @@
     team:          { x:   80, y: 10314, w: 1100, h:  420, s: 8, role: 'owner',        label: 'Who builds it' },
     scope:         { x:   80, y: 10954, w: 1540, h: 1320, s: 8, role: 'owner',        label: 'What v1 includes' },
     pricing:       { x: 1700, y: 10954, w: 1240, h: 1320, s: 8, role: 'owner',        label: 'What it costs' },
-    terms:         { x: 3020, y: 10954, w: 1100, h: 1320, s: 8, role: 'owner',        label: 'Terms, and for the room' }
+    terms:         { x: 3020, y: 10954, w: 1100, h:  720, s: 8, role: 'owner',        label: 'Terms' }
   };
 
   /* Reading order, which is also DOM order for the map and the layout pass. */
