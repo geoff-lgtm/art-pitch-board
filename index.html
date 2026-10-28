@@ -1,0 +1,202 @@
+<meta charset="utf-8">
+<title>A.R.T. &mdash; the pitch board</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=Caveat:wght@500&amp;display=swap">
+<link rel="stylesheet" href="css/app.css">
+
+<!-- SPEC §4. A fragment, by contract: no doctype, no outer document element, no
+     head, no viewport meta. Every inline style attribute in this file is LAYOUT
+     ONLY — flex direction, offsets, minimum sizes. css/app.css owns every
+     colour, radius, shadow and typeface, here as everywhere else.
+
+     `app--board` is the hook app.css §16a offers for the two-column shell: the
+     sidebar spans both grid rows down the left, the slim top bar and the pan
+     surface sit beside it. The column width is the --sidebar-w token, so the
+     rail stays tunable from the stylesheet and narrows on its own. -->
+
+<div class="app app--board">
+
+  <!-- ====================================================== the sidebar ====
+       Fixed outside the world: brand, the prototype chip, the eight sections as
+       a numbered list, both walkthroughs, and the board map. The current row is
+       set from the CAMERA — canvas.js derives it from the vertical position and
+       repaints it while you pan — and never from the last thing clicked. On a
+       12,280px board that distinction is the difference between a position and
+       a menu. -->
+  <aside class="sidebar" id="art-sidebar" data-nopan>
+
+    <div class="sidebar__brand">
+      <div class="brand">
+        <span class="brand__mark">A.R.T.</span>
+        <span class="brand__sub">Daily &amp; Practice</span>
+      </div>
+      <p class="chip chip--neutral">Prototype &middot; sample data</p>
+    </div>
+
+    <!-- Eight real buttons, directly inside the scroll box app.css lays out:
+         below 760px that box becomes a horizontal strip of numbers, and only a
+         direct child can be the flex item that survives it. -->
+    <nav class="sidebar__group" aria-label="Board sections">
+      <p class="sidebar__label">Sections</p>
+      <div class="sidebar__sections" id="art-sections">
+        <button class="sidebar__row" type="button" data-section="1" aria-current="false"
+                aria-keyshortcuts="1" data-live="sections"><span class="sidebar__num">01</span><span class="sidebar__title">The problem</span></button>
+        <button class="sidebar__row" type="button" data-section="2" aria-current="false"
+                aria-keyshortcuts="2" data-live="sections" data-hint="quiet"><span class="sidebar__num">02</span><span class="sidebar__title">The family app</span></button>
+        <button class="sidebar__row" type="button" data-section="3" aria-current="false"
+                aria-keyshortcuts="3" data-live="sections" data-hint="quiet"><span class="sidebar__num">03</span><span class="sidebar__title">The practitioner</span></button>
+        <button class="sidebar__row" type="button" data-section="4" aria-current="false"
+                aria-keyshortcuts="4" data-live="sections" data-hint="quiet"><span class="sidebar__num">04</span><span class="sidebar__title">What the practice learns</span></button>
+        <button class="sidebar__row" type="button" data-section="5" aria-current="false"
+                aria-keyshortcuts="5" data-live="sections" data-hint="quiet"><span class="sidebar__num">05</span><span class="sidebar__title">Access and invitations</span></button>
+        <button class="sidebar__row" type="button" data-section="6" aria-current="false"
+                aria-keyshortcuts="6" data-live="sections" data-hint="quiet"><span class="sidebar__num">06</span><span class="sidebar__title">The data</span></button>
+        <button class="sidebar__row" type="button" data-section="7" aria-current="false"
+                aria-keyshortcuts="7" data-live="sections" data-hint="quiet"><span class="sidebar__num">07</span><span class="sidebar__title">Delivery</span></button>
+        <button class="sidebar__row" type="button" data-section="8" aria-current="false"
+                aria-keyshortcuts="8" data-live="sections" data-hint="quiet"><span class="sidebar__num">08</span><span class="sidebar__title">The engagement</span></button>
+      </div>
+    </nav>
+
+    <!-- data-area="tour" is the hook app.css uses for the coral play glyph;
+         the running track inverts off aria-pressed. Both buttons also show and
+         hide the walkthrough bar, so they carry aria-expanded for it. -->
+    <div class="sidebar__tours" data-area="tour">
+      <p class="sidebar__label">Walkthroughs</p>
+      <button class="btn btn--primary btn--sm" type="button" id="art-tour-product"
+              data-track="product" data-live="walkthrough"
+              aria-pressed="false" aria-expanded="false" aria-controls="art-tour">
+        <span class="btn__glyph" aria-hidden="true">&#9654;</span> The product &middot; 8 stops
+      </button>
+      <button class="btn btn--sm" type="button" id="art-tour-business"
+              data-track="business" data-live="walkthrough" data-hint="quiet"
+              aria-pressed="false" aria-expanded="false" aria-controls="art-tour">
+        <span class="btn__glyph" aria-hidden="true">&#9654;</span> The engagement &middot; 6 stops
+      </button>
+    </div>
+
+    <!-- The map. app.css sizes it by HEIGHT (--mm-h) and derives the width from
+         the world tokens, because 4200 x 12280 is a sliver; canvas.js only
+         fills it with the frames and keeps the view rect in register. -->
+    <div class="minimap" id="art-minimap" role="group" data-nopan data-live="map"
+         aria-label="Board map. Click or drag to move the view."></div>
+
+  </aside>
+
+  <!-- ======================================================= the top bar ====
+       Slim, by contract: units, zoom, Overview, Reset, Replay the handoff, and the
+       one switch that explains the prototype. The brand moved to the sidebar,
+       so nothing here is decoration. -->
+  <header class="topbar" id="art-topbar">
+
+    <div class="topbar__group" data-area="units">
+      <div class="seg" id="art-units" role="group" aria-label="Dose units" data-live="units">
+        <button class="seg__item" type="button" data-units="household" data-action="units" aria-pressed="true">Household</button>
+        <button class="seg__item" type="button" data-units="grams" data-action="units" aria-pressed="false">Grams</button>
+      </div>
+    </div>
+
+    <div class="topbar__sep" aria-hidden="true"></div>
+
+    <div class="topbar__group" data-area="tools" data-collapse>
+      <button class="btn btn--ghost btn--sm" type="button" id="art-replay" data-action="replay" data-live="replay">Replay the handoff</button>
+      <label class="switch">
+        <input type="checkbox" id="art-hints" data-action="hints" checked>
+        Show what&rsquo;s live
+      </label>
+    </div>
+
+    <!-- Palette toggle. Two LIGHT palettes, A.R.T. by default; the alternate
+         setting repaints from one token block and changes no component rule.
+         Not a theme system and not dark mode. -->
+    <div class="topbar__group" data-area="palette">
+      <div class="seg" id="art-palette" role="group" aria-label="Colour palette" data-live="palette">
+        <button class="seg__item" type="button" data-palette-set="art" aria-pressed="true">Cream</button>
+        <button class="seg__item" type="button" data-palette-set="alt" aria-pressed="false">Lavender</button>
+      </div>
+    </div>
+
+    <div class="topbar__group" data-area="view" data-end>
+      <div class="stepper" id="art-zoom" data-live="zoom">
+        <button class="stepper__btn" type="button" id="art-zoom-out" aria-label="Zoom out">&minus;</button>
+        <span class="stepper__value num" id="art-zoom-value">100%</span>
+        <button class="stepper__btn" type="button" id="art-zoom-in" aria-label="Zoom in">+</button>
+      </div>
+      <!-- "Overview", not "Fit": a 4200x12280 board cannot be fitted AND read.
+           This control shows the board's shape, which is a real move on a
+           document this tall, and Reset is the button beside it. Calling it Fit
+           promised legibility it cannot deliver. -->
+      <button class="btn btn--quiet btn--sm" type="button" id="art-fit" data-live="overview"
+              aria-keyshortcuts="0" aria-label="Show the whole board as an overview">Overview</button>
+      <button class="btn btn--quiet btn--sm" type="button" id="art-reset" data-action="reset" data-live="reset">Reset</button>
+    </div>
+
+  </header>
+
+  <div class="viewport" id="art-viewport" role="group"
+       aria-label="The pitch board, 4200 by 12280. Use the section list to jump, or drag to pan. Keys 1 to 8 jump to a section, h returns to the handoff, 0 shows the whole board as an overview.">
+
+    <div class="world world--hints" id="art-world">
+
+      <svg class="wires" id="art-wires" width="4200" height="12280" viewBox="0 0 4200 12280" aria-hidden="true" focusable="false">
+        <defs>
+          <!-- the hero's own axis: the week builder's right edge (2720,3990) to
+               the family phone's left edge (2900,4220), across the channel that
+               section 3 leaves open for exactly this -->
+          <linearGradient id="art-grad-handoff" gradientUnits="userSpaceOnUse" x1="2720" y1="3990" x2="2900" y2="4220">
+            <stop class="wire__stop wire__stop--a" offset="0" stop-color="currentColor"></stop>
+            <stop class="wire__stop wire__stop--b" offset="1" stop-color="currentColor"></stop>
+          </linearGradient>
+        </defs>
+        <g class="wires__paths" id="art-wire-paths"></g>
+        <g class="wires__fx" id="art-wire-fx"></g>
+      </svg>
+
+      <div class="worldchrome" id="art-chrome"></div>
+      <div class="zones" id="art-zones"></div>
+      <div class="wirelabels" id="art-wirelabels"></div>
+
+      <p class="plate" id="art-plate">Concept prototype built for the A.R.T. team by Geoff Hladik &middot; <strong>sample data, not a live system.</strong></p>
+
+    </div>
+
+    <!-- The walkthrough bar. Pinned to .viewport and NOT to .world, so it never
+         scales with the zoom and never pans away; canvas.js sets its offsets and
+         its content, app.css owns its surface and type, and the inline rules
+         here are layout only. Hidden until ART.tour.start() runs. -->
+    <div class="tour" id="art-tour" role="group" aria-label="Guided walkthrough" data-nopan hidden
+         style="display:none;align-items:center;gap:18px;padding:11px 14px">
+
+      <div class="tour__copy" style="display:flex;align-items:baseline;gap:16px;flex:1 1 auto;min-width:0" aria-live="polite">
+        <p class="tour__track" id="art-tour-track" style="flex:0 0 auto">The product</p>
+        <p class="eyebrow tour__stop" id="art-tour-stop" style="flex:0 0 auto">1 &middot; The booklet</p>
+        <p class="tour__line" id="art-tour-line" style="min-width:0">Every line is the same six fields. It is already a schema with no screen.</p>
+      </div>
+
+      <div class="tour__nav" style="display:flex;align-items:center;gap:8px;flex:0 0 auto">
+        <button class="btn btn--quiet btn--sm" type="button" id="art-tour-prev" aria-keyshortcuts="ArrowLeft">&larr; Back</button>
+        <span class="tour__count" id="art-tour-count" style="min-width:52px;text-align:center">1 of 8</span>
+        <button class="btn btn--primary btn--sm" type="button" id="art-tour-next" aria-keyshortcuts="ArrowRight">Next &rarr;</button>
+        <button class="iconbtn" type="button" id="art-tour-exit" aria-label="Exit the walkthrough" aria-keyshortcuts="Escape">&times;</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="toast-host" id="art-toast" role="status" aria-live="polite"></div>
+
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/data.js"></script>
+<script src="js/prep.js"></script>
+<script src="js/metrics.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/zone-story.js"></script>
+<script src="js/zone-practitioner.js"></script>
+<script src="js/zone-family.js"></script>
+<script src="js/zone-owner.js"></script>
+<script src="js/zone-platform.js"></script>
+<script src="js/zone-business.js"></script>
+<script src="js/canvas.js"></script>
+<script src="js/app.js"></script>

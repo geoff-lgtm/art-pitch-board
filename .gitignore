@@ -1,0 +1,10 @@
+# INTERNAL ONLY — never in the repo, because a static deploy serves every file
+# in it. These hold the commercial reasoning, the verbatim brief, and design
+# references that must not reach a link sent to the client.
+NOTES.md
+HANDOFF.md
+SPEC.md
+HOME_SPEC.md
+CRADLE_UX.md
+DESIGN_PASS.md
+.DS_Store
