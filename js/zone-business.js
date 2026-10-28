@@ -461,10 +461,10 @@
      could not match. A résumé does none of that. It lists what happened and
      stops. All of it is cut; what is left is the facts it was dressed up in:
 
-       Geoff Hladik   FlipaClip + Cradle · 150M users · WINNER, Apple App of the Year
-       Lisa           Head of Product, Planet Fitness · 30 people · app + web
-       Lisa           product lead at Planet Fitness · built the technology
-                      stack, apps and web
+       Engineering and tech stack  Geoff Hladik · FlipaClip + Cradle · 150M users
+                      · WINNER, Apple App of the Year
+       Product and design  Lisa Debenedictis · Head of Product, Planet Fitness
+                      · 30 people · app + web
        An A.R.T. family   their son is a client of the practice, ~20 allergies;
                       they use the booklet daily and QA against it
 
@@ -488,7 +488,7 @@
   function team(root) {
     var geoff =
       '<div class="team__col">' +
-        '<p class="team__role">Engineering</p>' +
+        '<p class="team__role">Engineering and tech stack</p>' +
         '<p class="team__name">' + esc(NAMES.built) + '</p>' +
         '<p class="team__of">Built <strong>FlipaClip</strong> and ' +
           '<strong>Cradle</strong>.</p>' +
@@ -498,7 +498,7 @@
 
     var product =
       '<div class="team__col">' +
-        '<p class="team__role">Product</p>' +
+        '<p class="team__role">Product and design</p>' +
         '<p class="team__name">' + esc(NAMES.product) + '</p>' +
         '<p class="team__of">Head of Product at ' +
           '<strong>Planet Fitness</strong>.</p>' +

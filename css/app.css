@@ -4564,6 +4564,11 @@ svg [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 
   /* the only labels that say what each of the three columns IS; measured
      3.18:1 on --sand. */
   color: var(--ink-soft);
+  /* These must stay ONE line. The three columns are not a subgrid, so a label
+     that wraps in one of them pushes that column's name, figure and award
+     down and breaks the row the frame's argument depends on: three
+     equivalent credentials, read across. Measured: the longest of the three,
+     "ENGINEERING AND TECH STACK", is one line in a 326px column. */
 }
 .team__name {
   margin-top: 8px;
