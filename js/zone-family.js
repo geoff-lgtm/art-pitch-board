@@ -1615,10 +1615,9 @@
   }
 
   /* The one instruction, and it has to survive the eight-word clamp as an
-     INSTRUCTION. The spine tap's headline is "Spine tap — base of the back to
-     the neck, 2 minutes", which clamps to "Spine tap." and tells a parent
-     nothing, so when the headline collapses the first real action step takes
-     its place. Nothing is written here that the dose engine does not already
+     INSTRUCTION. A headline that clamps to "Spine tap." tells a parent
+     nothing, so when the headline collapses the first real step takes its
+     place. Nothing is written here that the dose engine does not already
      say; this only chooses which of its sentences fits. */
   function instructionFor(p) {
     var out = eightWords(p.headline);

@@ -269,35 +269,41 @@
       steps: [],
       viz: null
     };
+    /* THE BOARD DOES NOT AUTHOR CLINICAL METHOD.
+
+       These three screens used to carry step-by-step technique written here:
+       how to hold the dropper, how far up the spine to tap and with how many
+       fingers, how long to work up and back down. None of it came from the
+       practice. The terms frame on this same board promises, in writing,
+       "The protocols, the doses and the method are A.R.T.'s. We transcribe
+       them; we never author them" — so the document contradicted its own
+       term, and it did it by explaining a clinic's own procedure back to the
+       clinic that owns it, in front of the practitioners who perform it.
+
+       What a schedule legitimately holds is the PLAN: what the item is, how
+       much, when, how often. That is what these screens show now. The
+       instruction line is the practice's to write, and the screen says so
+       rather than filling the space with a plausible guess. */
+    function planSteps(lead) {
+      var when = 'At ' + ART.ui.clock(entry.timing) +
+        (entry.cadence ? ', ' + String(entry.cadence).toLowerCase() : ', every day') + '.';
+      return [lead, when, 'Wording for this step comes from A.R.T.'];
+    }
+
     if (kind === 'alka') {
-      out.headline = entry.display + ' dissolved in water, before the drops.';
-      out.steps = [
-        'Drop the tablet into a small glass of water.',
-        'Wait until it has stopped fizzing.',
-        'Have them drink all of it.',
-        'Give it at ' + ART.ui.clock(entry.timing) + ', every morning.'
-      ];
+      out.headline = entry.display + ', before the drops.';
+      out.steps = planSteps(entry.display + ' of Alka-Seltzer, taken in water.');
       out.viz = { kind: 'tab', n: entry.value, inGlass: true };
       return out;
     }
     if (drops) {
-      out.headline = entry.display + ' under the tongue, before any food.';
-      out.steps = [
-        'Hold the dropper above the tongue — it should not touch.',
-        'Count ' + entry.value + ' drops out loud with them.',
-        'Nothing to eat or drink for the next few minutes.',
-        'Give it at ' + ART.ui.clock(entry.timing) + ', every day.'
-      ];
+      out.headline = entry.display + ', before any food.';
+      out.steps = planSteps(entry.display + ', under the tongue.');
       out.viz = { kind: 'drop', n: entry.value, under: 'the tongue' };
       return out;
     }
-    out.headline = 'Spine tap — base of the back to the neck, ' + entry.value + ' minutes.';
-    out.steps = [
-      'Sit them forward, or lie them on their front.',
-      'Tap lightly with two fingers, base of the back upward to the neck.',
-      'Work up and back down for the full ' + entry.value + ' minutes.',
-      'Give it at ' + ART.ui.clock(entry.timing) + (entry.cadence ? ' on ' + entry.cadence : '') + '.'
-    ];
+    out.headline = 'Spine tap — ' + entry.value + ' minutes.';
+    out.steps = planSteps(entry.value + ' minutes of spine tap.');
     out.viz = { kind: 'tap', minutes: entry.value, path: 'base to neck', segments: 7 };
     return out;
   }
