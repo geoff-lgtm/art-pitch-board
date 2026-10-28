@@ -1,12 +1,26 @@
+<!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A.R.T. &mdash; the pitch board</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600;700&amp;family=Caveat:wght@500&amp;display=swap">
 <link rel="stylesheet" href="css/app.css">
 
-<!-- SPEC §4. A fragment, by contract: no doctype, no outer document element, no
-     head, no viewport meta. Every inline style attribute in this file is LAYOUT
-     ONLY — flex direction, offsets, minimum sizes. css/app.css owns every
-     colour, radius, shadow and typeface, here as everywhere else.
+<!-- SPEC §4 called for a fragment with no doctype and no viewport meta. That
+     contract came from publishing this as a Claude Artifact, which requires a
+     fragment. It is a standalone site now, and the contract stopped applying
+     the moment it was deployed to its own URL:
+
+       - with no doctype the browser rendered it in QUIRKS MODE
+         (document.compatMode === 'BackCompat', measured on the live page), so
+         every length here was being resolved by 1990s box rules that happened
+         to agree with the stylesheet rather than by the stylesheet;
+       - with no viewport meta a phone assumes a 980px desktop canvas and
+         zooms out, so the sub-760px layout in app.css §16a could never fire.
+         This board is sent as a LINK. A link gets opened on a phone.
+
+     Both are restored above. Every inline style attribute in this file is
+     LAYOUT ONLY — flex direction, offsets, minimum sizes. css/app.css owns
+     every colour, radius, shadow and typeface, here as everywhere else.
 
      `app--board` is the hook app.css §16a offers for the two-column shell: the
      sidebar spans both grid rows down the left, the slim top bar and the pan

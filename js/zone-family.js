@@ -2985,11 +2985,19 @@
      register stands at its full seven rows with scrollHeight == clientHeight.
      The band's height becomes this column's (284 + a 48px head = 332) rather
      than the queue's 228, which is the 104px the extra frame height buys. */
-  var LEDGER_TBL_H = 460;   /* measured scrollHeight is 451; 460 leaves it 9px
-                                of slack so clientHeight == scrollHeight and the
-                                box never scrolls. The 284 the comment above
-                                predicted was short — the rows are 60 at this
-                                width, not the 40 that number assumed. */
+  /* 460 -> 437. The old note said 460 left 9px of slack so the box never
+     scrolled. That was measured in QUIRKS MODE: index.html shipped without a
+     doctype, so the browser resolved these boxes by legacy rules. In standards
+     mode the real scrollHeight is 504 against a 460 cap, and the 44px it hid
+     fell in the MIDDLE of row 7 — the frame showed a sliced half-row reading
+     "Egg hidden in the brownie mix".
+
+     437 is row 6's exact bottom edge (32px head + six 68px rows), so the cut
+     lands between rows and the box reads as a list that continues rather than
+     a broken one. It also returns 23px, which clears the 12px this frame's
+     content was overflowing by: the frame cannot grow, because section 3's
+     header band starts 14px below it. */
+  var LEDGER_TBL_H = 437;
 
   function ledger(rows) {
     if (!rows.length) return '';
