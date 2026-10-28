@@ -218,6 +218,23 @@
 
     /* A sibling of .banner, not a child: §16c puts the hairline under the title
        row and the credential, and gives the foot its own padding above. */
+    /* A GUIDE, NOT A KEYBOARD REFERENCE. This row used to be three chips —
+       keys, drag, zoom — which tell a reader how to OPERATE the board and
+       nothing about how to read it. The board opens here now, so these are
+       the first words after the title, and they have one job: say what the
+       thing is, in what order it goes, and that nobody has to drive it if
+       they would rather be walked through. */
+    var guide =
+      '<p class="banner__guide">' +
+        'Start at the top and read down. <strong>Sections 1 to 6 are the ' +
+        'product</strong> &mdash; the problem the booklet has today, the ' +
+        'family&rsquo;s app, the practitioner&rsquo;s, what the practice sees ' +
+        'across every client, who may open what, and the data underneath. ' +
+        '<strong>Sections 7 and 8 are the plan</strong> &mdash; how it is ' +
+        'built, and what it costs. Drag anywhere to move, or press a ' +
+        'walkthrough below and the board takes you through it.' +
+      '</p>';
+
     var foot =
       '<div class="banner__foot">' +
         '<p class="eyebrow">How to read this board</p>' +
@@ -233,7 +250,7 @@
           '&#8984;/Ctrl-scroll to zoom</span>' +
       '</div>';
 
-    root.innerHTML = banner + foot;
+    root.innerHTML = banner + guide + foot;
   }
 
   /* ============================================================ 2 · booklet */
@@ -1017,7 +1034,7 @@
       /* the cadence is printed, always: twice a week is not 'daily, missed five
          times', and it is the whole reason tapping is trackable at all */
       var when = item.cadenceKind === 'daily' ? 'every day' : item.cadence;
-      var detail = item.doseValue + ' ' + item.doseUnit + ' · ' +
+      var detail = ART.itemDose(item.kind, item.doseValue) + ' · ' +
         clockLabel(item.timing) + ' · ' + when;
       rows += ledgerRow(glyph, item.label, detail, cells, 'nowhere');
     });

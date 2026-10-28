@@ -3123,6 +3123,18 @@ svg [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 
 .banner__cred strong { color: var(--ink-2); font-weight: 600; }
 .banner__cred .num,
 .banner__cred .mono { font-size: 12px; color: var(--navy-deep); font-weight: 500; }
+/* The reading guide: the first prose a cold reader meets, so it is set at
+   reading size rather than at the metadata size the chips beneath it use. */
+.banner__guide {
+  margin-top: 12px;
+  /* wide, deliberately: this frame cannot grow past the section-1 band 100px
+     below it, so the measure buys the lines the height cannot. */
+  max-width: 94ch;
+  font: 400 14px/1.6 var(--font-ui);
+  color: var(--ink-soft);
+}
+.banner__guide strong { font-weight: 600; color: var(--ink-body); }
+
 .banner__foot {
   display: flex;
   flex-wrap: wrap;

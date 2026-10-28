@@ -540,14 +540,14 @@
         /* PRESENT TENSE. "Worked through" made them alumni; they are a client
            family right now, mid-protocol, which is the whole reason the
            credential carries weight — they use the booklet this week. */
-        '<p class="team__of">Their son is a client of the practice.</p>' +
+        '<p class="team__of">Our son is a client of the practice.</p>' +
         '<p class="team__figure">~20<small>allergies, working through them ' +
           'one at a time.</small></p>' +
         /* .team__award, not .team__of. The bottom slot of this repeated row
            closes on a 2px --navy-deep rule in columns 1 and 2 and closed on
            nothing in column 3 — and column 3 is the credential that matters
            most to this client. Same slot, same treatment. */
-        '<p class="team__award">They QA against the live booklet daily</p>' +
+        '<p class="team__award">We QA against the live booklet daily</p>' +
       '</div>';
 
     /* The head is held to the same band as the bar beneath it, so the frame's

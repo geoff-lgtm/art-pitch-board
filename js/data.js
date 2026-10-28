@@ -1154,15 +1154,15 @@
      them — a day with the food logged and the drops missing is not a logged
      day. All three are CORE: they are timed and they are strict.
 
-     THE ALKA-SELTZER DOSE IS UNCONFIRMED. The brief gave it only as a tab at
-     an unspecified amount, so `1 tab` is a placeholder standing in for a real
-     prescription, and it is the one figure on these screens that nobody has
-     confirmed. It needs a real number from the practice. */
+     The Alka-Seltzer dose is half a tablet, confirmed by the family against
+     the booklet. It is stored as 0.5 so adherence arithmetic still works on
+     it, and printed as a fraction, because "0.5 tabs" is not how anyone says
+     it at a kitchen table at eight in the morning. */
 
   var ALKA_LABEL = 'Alka-Seltzer';
   var DROP_LABEL = 'Water drops';
   var TAP_LABEL = 'Spine tap';
-  var ALKA_INSTR = 'One tablet dissolved in water, first thing, before the drops.';
+  var ALKA_INSTR = 'Half a tablet dissolved in water, first thing, before the drops.';
   var DROP_INSTR = 'Under the tongue, in the morning, before any food.';
   var TAP_INSTR = 'Along the spine, base of the back to the neck, 2 minutes.';
   var ALKA_TIMES = ['07:15', '08:00', '07:45', '08:15', '07:30', '08:00'];
@@ -1184,7 +1184,7 @@
   var ITEM_SPEC = {
     alka: {
       label: ALKA_LABEL, instructions: ALKA_INSTR, daily: true,
-      doseValue: 1, doseUnit: 'tab', times: ALKA_TIMES
+      doseValue: 0.5, doseUnit: 'tab', times: ALKA_TIMES
     },
     drops: {
       label: DROP_LABEL, instructions: DROP_INSTR, daily: true,
@@ -1229,9 +1229,24 @@
     tapping: 'spine tap, base to neck'
   };
   var ITEM_DISPLAY = {
-    alka: function (v) { return v + (v === 1 ? ' tab' : ' tabs'); },
+    /* A half is printed as a fraction, not as 0.5 — the number on this line
+       is read aloud by a parent holding the tablet. Plural only above one. */
+    alka: function (v) {
+      return (v === 0.5 ? '\u00bd' : String(v)) + (v > 1 ? ' tabs' : ' tab');
+    },
     drops: function (v) { return v + ' drops'; },
     tapping: function (v) { return v + ' min'; }
+  };
+
+  /* ONE FORMATTER FOR AN ITEM'S DOSE, exported because there were three.
+     ITEM_DISPLAY was private, so zone-story and zone-practitioner each built
+     their own `doseValue + ' ' + doseUnit`, and the moment the Alka-Seltzer
+     dose became a half the board printed it BOTH ways at once: "½ tab" on the
+     phone and "0.5 tab" on the frames beside it. The same fact must not have
+     two spellings on one board. */
+  ART.itemDose = function (kind, value) {
+    var f = ITEM_DISPLAY[kind];
+    return f ? f(value) : String(value);
   };
 
   ART.makeItemEntry = function (client, item, iso, opts) {

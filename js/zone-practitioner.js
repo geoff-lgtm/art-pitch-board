@@ -1140,7 +1140,7 @@
     var items = ART.protocolItems ? ART.protocolItems(client.id) : [];
     for (var k = 0; k < items.length; k++) {
       chips += '<span class="chip chip--neutral">' + E(items[k].label) +
-        ' <span class="mono">' + E(items[k].doseValue + ' ' + items[k].doseUnit) +
+        ' <span class="mono">' + E(ART.itemDose(items[k].kind, items[k].doseValue)) +
         '</span> · ' + E(items[k].cadence) + '</span>';
     }
     if (!chips) return '';

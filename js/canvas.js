@@ -257,7 +257,9 @@
        hairline is now its own width, which is correct — it is the frame's
        rule, and the full-bleed rules on this board are the SECTION rules
        canvas.js draws at x80 -> x4120. */
-    title:         { x:   80, y:    60, w: 1060, h:  200, s: 0, role: 'banner',       label: 'The argument' },
+    /* h 200 -> 290. The board opens here now and carries a reading guide, and
+       this frame cannot grow further: section 1's header band begins at 360. */
+    title:         { x:   80, y:    60, w: 1480, h:  290, s: 0, role: 'banner',       label: 'The argument' },
 
     booklet:       { x:   80, y:   510, w:  880, h: 1240, s: 1, role: 'problem',      label: 'The booklet today' },
     concurrency:   { x: 1000, y:   510, w: 3120, h:  600, s: 1, role: 'problem',      label: 'Three protocols, one child' },
@@ -847,7 +849,13 @@
   };
 
   var DEFAULT_TRACK = 'product';
-  var HOME = 'handoff';          /* where the board opens, and where exit returns */
+  /* THE BOARD OPENS ON ITS OWN TITLE. It used to open framed on the handoff
+     pair in section 3, which is the best thing on the board but the worst
+     first thing: a cold reader following a link landed mid-flow, beside a
+     phone, with no idea what they were looking at or which way to read. The
+     handoff is still the hero stop of the product walkthrough, where it has
+     the context to land. */
+  var HOME = 'title';            /* where the board opens, and where exit returns */
 
   /* -------------------------------------------------------------------- state */
 
