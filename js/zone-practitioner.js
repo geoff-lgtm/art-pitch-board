@@ -247,8 +247,13 @@
       return m ? 'Held ' + m[1] + 'd' : 'Held';
     }
     if (a.tone === 'miss') {
+      /* "unlogged", not "missed". metrics.js builds this as "3 days unlogged"
+         and the chip was rewriting it to "3 missed" — which asserts the child
+         did not take the dose, when the only thing the data knows is that
+         nobody wrote it down. One is a record gap; the other is an accusation
+         aimed at a family, printed on their practitioner's screen. */
       m = /^(\d+)/.exec(a.label);
-      return (m ? m[1] + ' ' : '') + 'missed';
+      return (m ? m[1] + ' ' : '') + 'unlogged';
     }
     if (a.tone === 'advance') return 'Advance';
     if (a.label === 'Paused') return 'Paused';

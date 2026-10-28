@@ -853,7 +853,12 @@
       '<div style="margin-top:18px">' +
         eyebrow('Independent third-party audit') +
         '<p class="lede" style="margin-top:6px">Before launch, the build ' +
-        'is audited by someone who did not write it. Scope, not an upsell.</p>' +
+        /* "Scope, not an upsell." argued with the reader about a charge they
+           had not yet questioned, in the voice of a vendor on the defensive.
+           Saying what the audit covers is a better answer than denying a
+           motive nobody has accused us of. */
+        'is audited by a firm that did not write it: the sign-in, the ' +
+        'row-level policies, the storage buckets and the edge functions.</p>' +
       '</div>';
 
     var body =

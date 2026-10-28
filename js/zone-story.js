@@ -209,9 +209,27 @@
   function title(root) {
     var banner =
       '<div class="banner">' +
+        /* THE FIRST SENTENCE ON THE BOARD, and it used to be a gotcha:
+           "Your own FAQ names strict adherence as the biggest driver of
+           outcome — and nothing measures it."
+
+           Two things wrong with that, in the opening line of a document
+           asking a practice to hire you. "Your own FAQ" turns the practice's
+           own words back on them, which is an argument you make against
+           someone, not for them — and a forwarded link puts it in front of
+           people whose FAQ it is not. Then "nothing measures it" tells a
+           practice that keeps a careful written booklet, page by page, that
+           they measure nothing. The booklet IS the measurement; the whole of
+           section 1 is built on respecting that.
+
+           The hinge is kept and the accusation is dropped: adherence decides
+           the outcome, the booklet already records it, and the gap is that
+           nobody can add it up. That is a problem to solve together rather
+           than a failure to point at. */
         '<h1 class="banner__title">A.R.T. Daily &amp; Practice' +
-          '<small>Your own FAQ names strict adherence as the biggest driver of ' +
-            'outcome &mdash; and nothing measures it.</small>' +
+          '<small>Strict adherence is the biggest driver of outcome. The ' +
+            'booklet records it a day at a time &mdash; nothing adds it ' +
+            'up.</small>' +
         '</h1>' +
         '<p class="meta banner__cred">' + CREDENTIAL + '</p>' +
       '</div>';

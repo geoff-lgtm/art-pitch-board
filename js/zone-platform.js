@@ -303,8 +303,11 @@
     ['Session', '8 hours',
       'Then re-authenticate. A practice machine is often a shared one.'],
     ['Password', '12 characters, breach-checked',
-      'Rejected if the string appears in a public breach corpus. No rotation ' +
-      'theatre — rotation pushes people towards weaker passwords.'],
+      /* "No rotation theatre" called a policy many clinics are required to
+         run a piece of theatre, on a frame read by the people running it. */
+      'Rejected if the string appears in a public breach corpus. No scheduled ' +
+      'expiry — forcing a change on a timer pushes people towards weaker ' +
+      'passwords.'],
     ['Second factor', 'TOTP, at first login',
       'Mandatory on every owner and practitioner account, and enrolled by the ' +
       'family on the same screen. Any authenticator app.'],
