@@ -23,7 +23,7 @@
    EVERYTHING ELSE on these six frames — the vendor list behind "associated
    regular fees", how long the tail runs, support and response, IP and
    ownership, the in/out scope line — is a PROPOSAL. It renders inside a
-   .draft block headed by the `Draft — for Geoff's sign-off` chip, and the
+   .draft block headed by the `Proposed — to be agreed` chip, and the
    copy in those blocks opens `Not quoted.` so a reader with nobody
    presenting cannot mistake a proposal for a term. No figure, date, client,
    metric or guarantee is invented anywhere in this file: grep it for a
@@ -67,6 +67,9 @@
   var MONTHLY = '$500';
   var MONTHLY_PHRASE = '$500 a month';
   var TERM = 'Two years';
+  /* the adjectival form: "a two-year agreement", never "a two years
+     agreement" — lower-casing TERM is not the same as declining it */
+  var TERM_ADJ = 'two-year';
   var BUILD_WEEKS = 6;
 
   /* The timeline axis: seven columns for weeks 0–6 (the estimate), then six
@@ -96,7 +99,7 @@
      one object, and every one of these opens with "Not quoted." */
   function draft(inner) {
     return '<div class="draft">' +
-             '<p class="draftchip">Draft &mdash; for Geoff&rsquo;s sign-off</p>' +
+             '<p class="draftchip">Proposed &mdash; to be agreed</p>' +
              inner +
            '</div>';
   }
@@ -432,7 +435,7 @@
         planAxis() + planRows() +
       '</div>' +
       draft('<p class="meta"><strong>Not quoted.</strong> The ' + word(BUILD_WEEKS) +
-            '-week estimate is Geoff&rsquo;s own and is stated as one. The tail is not: ' +
+            '-week estimate is ours and is stated as one. The tail is not: ' +
             'it depends on what the real booklet turns up, and <strong>store review is a ' +
             'queue at Apple and Google</strong> that neither side of this contract ' +
             'controls.</p>' +
@@ -444,7 +447,7 @@
 
     root.innerHTML =
       head('Schedule', 'Six weeks to v1',
-           'Geoff&rsquo;s estimate, not a vendor quote. Everything after v1 is a range.') +
+           'Our estimate, not a vendor quote. Everything after v1 is a range.') +
       zbody(body);
   }
 
@@ -770,14 +773,15 @@
             BUILD_FEE + ' build &middot; ' + SEC_FEE +
             ' third-party security audit</p>' +
         '</div>' +
+        /* The rate and the term are ONE fact, not two. Listing "Minimum term"
+           on its own row read as a separate condition bolted on; the monthly
+           IS the two-year rate, which is a stronger position — it implies a
+           different number without the commitment, without naming one — and
+           it stops the same fact appearing twice on one frame. */
         '<div class="price__line" data-emph>' +
           '<p class="price__label">Monthly</p>' +
           '<p class="price__figure">' + MONTHLY +
-            '<small>per month</small></p>' +
-        '</div>' +
-        '<div class="price__line">' +
-          '<p class="price__label">Minimum term</p>' +
-          '<p class="price__figure">' + TERM + '</p>' +
+            '<small>on a ' + TERM_ADJ + ' agreement</small></p>' +
         '</div>' +
       '</div>';
 
@@ -833,14 +837,14 @@
       covers +
       draft(oneBillDrawing() +
             '<p class="meta" style="margin-top:10px"><strong>Not quoted.</strong> ' +
-            'Geoff gave the category &mdash; <em>any associated regular fees</em> ' +
+            'The category is quoted &mdash; <em>any associated regular fees</em> ' +
             '&mdash; and not the list. These five are what the category covers in ' +
             'practice, and both the list and who holds each account are for the ' +
             'room.</p>');
 
     root.innerHTML =
       head('The engagement', 'What it costs',
-           'Three figures, then the one that decides it: what $500 a month buys.') +
+           'Two figures, then the one that decides it: what the monthly buys.') +
       zbody(body);
   }
 
@@ -900,7 +904,7 @@
                  'Proposed: the practice talks to the two people who built it.') +
           clause('', 'Anything that stops a family logging a dose comes first',
                  'Proposed: same-day for that, the next working day for everything else. ' +
-                 'Response times were not quoted and are Geoff&rsquo;s to set.') +
+                 'Response times are not quoted yet and are for the room.') +
         '</ul>' +
       '</div>';
 
