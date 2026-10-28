@@ -839,8 +839,8 @@
             '<p class="meta" style="margin-top:10px"><strong>Not quoted.</strong> ' +
             'The category is quoted &mdash; <em>any associated regular fees</em> ' +
             '&mdash; and not the list. These five are what the category covers in ' +
-            'practice, and both the list and who holds each account are for the ' +
-            'room.</p>');
+            'practice. Which of them A.R.T. already holds, and which we would set up, ' +
+            'is a question for the first call.</p>');
 
     root.innerHTML =
       head('The engagement', 'What it costs',
