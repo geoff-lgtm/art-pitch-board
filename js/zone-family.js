@@ -5,9 +5,8 @@
    hungry child. Rebuilt 2026-10-20 against DESIGN_PASS.md PART 4 and PART 5.
 
    WHAT CHANGED THIS ROUND AND WHY
-   Geoff: "I hate the design, it is messy misaligned, ugly, not clean… Start by
-   redoing the UX everywhere (colors are not bad) but the design sucks, then do
-   the Home, and then make the schedule next to it."
+   The palette was already right and the features were not the problem; the
+   craft was. Home first, then Schedule beside it.
 
    So the craft, not the colour and not the features:
 
@@ -53,7 +52,7 @@
                   wait, the spine tap on its days) and OTHER (must happen
                   today, timing is yours). The contrast IS the feature.
      ph-calendar  CALENDAR — the week, plan against actual. Content unchanged
-                  this round; Geoff: "move them to the right."
+                  this round; moved to the right of the two that lead.
      ph-reports   REPORTS — the record, built this round to the reference app's own
                   Reports tab (HOME_SPEC §12): the adherence ring with its
                   period, the component bars under it, a three-tile strip, the
@@ -73,8 +72,8 @@
    a unit. eightWords() is the clamp and it is applied to everything that comes
    out of the dose engine or the content set.
 
-   THE PALETTE IS UNCHANGED. the reference app is purple; we are cream, navy and coral,
-   which he called "phenom" three times. There is not one colour in this file:
+   THE PALETTE IS UNCHANGED. The reference app is purple; this board is cream,
+   navy and coral, and that is settled. There is not one colour in this file:
    css/app.css owns every hue, radius, shadow and typeface.
 
    API
@@ -649,9 +648,8 @@
   /* ============================================================ SCREEN 1 ===
      HOME — rebuilt to the shipped app's own metrics (HOME_SPEC §4–§7).
 
-     Geoff: "okay just make it look like mine w/ your color scheme. your
-     buttons suck everything is just janky and hippy, this is an app people
-     need to use."
+     The brief was structure over invention: match a shipped app people
+     actually use, in this board's own palette.
 
      So this round copies STRUCTURE and SUBTRACTION and keeps the palette. In
      order, and there is nothing else on the screen:
@@ -869,9 +867,8 @@
 
   /* --- 3. THE LOG ROWS -------------------------------------------------- */
 
-  /* Geoff: "I want the home screen to show a running tally of the historically
-     logged events which could either be your daily task/dose, the drops, taps,
-     or a food group consumed."
+  /* Home shows a running tally of what has actually been logged — the daily
+     dose, the drops, the taps, or a food group consumed.
 
      So it is a HISTORY, not today's list: ART.metrics.loggedFeed returns only
      what was actually logged, newest first, across days, and it prints
@@ -963,7 +960,7 @@
 
   /* --- 4 & 5. THE BUTTONS. Two tiers, and the size gap IS the hierarchy -- */
 
-  /* HOME_SPEC §5: ours are the thing he called janky, and there were two
+  /* HOME_SPEC §5: the first pass at these read as unserious, for two
      separate reasons.
 
      1  FIVE EQUAL TILES FLATTENED THE HIERARCHY. `Reaction` looked exactly as
@@ -978,7 +975,7 @@
 
      2  THE 40px TINTED DISC CAME OFF. A glyph centred in a coloured circle is
         a list-item avatar; five of them in a grid is a contact list, and that
-        is most of what read as "hippy". The tint moved to the icon's own ink,
+        is most of what read as unserious. The tint moved to the icon's own ink,
         so the five actions are still five colours and the object on the tile
         is now the object itself.
 
@@ -1068,11 +1065,12 @@
   }
 
   /* --- the five marks, FILLED --------------------------------------------
-     HOME_SPEC §5: "the reference app's icons are filled, coloured, literal objects — a
-     bottle, a moon, a changing table, an apple, a pill. Ours are 1.6px
-     monochrome outlines, which is most of 'hippy'."
+     HOME_SPEC §5: the reference app's icons are filled, coloured, literal
+     objects — a bottle, a moon, a changing table, an apple, a pill. The first
+     pass here used 1.6px monochrome outlines, which is most of what read as
+     unserious.
 
-     He is right, and the reason is scale. A 1.6px outline is a drawing of a
+     That is right, and the reason is scale. A 1.6px outline is a drawing of a
      thing; at 28px in a 92px tile it is four hairlines with air between them,
      so the eye reads a diagram and has to decode it. A filled silhouette is
      the thing: it has one edge, it survives being glanced at from arm's
@@ -1178,7 +1176,7 @@
       }), 'evenodd');
   }
   /* ============================================================ SCREEN 2 ===
-     SCHEDULE — new, and Geoff calls it the core of the product.
+     SCHEDULE — new, and the core of the product.
 
      > "The schedule is the weekly schedule for the specific allergy food being
      >  treated and the associated plan. That's like....start morning off w/
@@ -3065,9 +3063,7 @@
   /* ============================================================ SCREEN 7 ===
      REPORTS.  HOME_SPEC §12 — the family app's seventh screen.
 
-     Geoff: *"throw reports mockup for the family app"*
-
-     the reference app's Reports tab is the model (read-only reference): a big ring
+     The reference app's Reports tab is the model (read-only reference): a big ring
      figure with a one-word state, labelled component bars, a stat strip, a
      goal-and-ETA line, Milestones as cards, and a NEXT STEP card that ends in
      one pill button. That is the reference app's score card (the ring,
@@ -3766,8 +3762,8 @@
      HOME and SCHEDULE stand side by side because they are the product and
      because NEXT UP reads SCHEDULE's core plan; PREP sits beside them because
      tapping a row on either redraws it (§7.6). CALENDAR, PREP, MEALS and MORE
-     keep their content this round — Geoff: "you could keep them on there just
-     move them to the right and we'll work off that later."
+     keep their content this round and sit to the right of the two that lead,
+     to be worked on later.
      ====================================================================== */
 
   function focus() { return ART.store.focusClient(); }

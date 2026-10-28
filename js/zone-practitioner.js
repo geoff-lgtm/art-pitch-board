@@ -789,7 +789,7 @@
   /* --- who can cover (NOTES §A6) ------------------------------------------
      NOT a leaderboard. This panel used to carry each colleague's 28-day logged
      percentage, sorted descending — which is a league table on a peer's own
-     screen. Geoff: "no need to create competition between practitioners."
+     screen, and there is no reason to create competition between them.
      Comparative adherence still exists, on the OWNER dashboard in section 4,
      where management comparison is the actual job. Here the question is only
      "who else holds clients, where are they, and do they have room" — the

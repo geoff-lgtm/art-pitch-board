@@ -802,7 +802,7 @@
      `what` is a kind ('dose', 'drops', 'tapping', 'alka'), a band ('core',
      'other' / 'food') or 'any'. 'dose' means the dose of the food being
      TREATED — a maintenance serving is reached with 'food', because that is
-     the button Geoff named and the two are different acts.
+     the button the screen names, and the two are different acts.
      A CORE item that was never logged carries forward for six days — that
      outstanding Monday spine tap is the thing the booklet loses and the whole
      reason the `Taps` button is live on a Wednesday. A missed food dose does

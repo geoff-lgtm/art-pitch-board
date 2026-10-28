@@ -40,10 +40,9 @@
      19  SCHEDULE: .daypick  .band / .band--core / .band--other
 
    -----------------------------------------------------------------------------
-   DESIGN PASS, 2026-10-20. Geoff: *"I hate the design, it is messy misaligned,
-   ugly, not clean… Start by redoing the UX everywhere (colors are not bad) but
-   the design sucks."* So this pass spent NOTHING on colour and everything on
-   alignment, rhythm and restraint. What changed, in four moves:
+   DESIGN PASS, 2026-10-20. The palette was already right; the craft was not.
+   So this pass spent NOTHING on colour and everything on alignment, rhythm
+   and restraint. What changed, in four moves:
 
      1. ONE SPACING SCALE. Every padding, margin and gap snapped to
         0 · 2 · 4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 72 — 28 distinct values
@@ -94,11 +93,11 @@
      structure, cream instead of lavender, total spread held under ~6%
      lightness so it never competes with content or the status inks. */
   --pg-1:#F7EFE8;   --pg-2:#F2E6DA;       --pg-3:#FBE5D7;
-  /* Tile inks, Geoff's own: "i hate your button colors. use mine". Values are
-     his light `dusk`/`palette` exports, mapped SEMANTICALLY — Dose is a
-     measured feed, Food is the reference app's Solids, Drops is the droplet he draws as
+  /* Tile inks taken from the reference app rather than invented. Values are
+     its light `dusk`/`palette` exports, mapped SEMANTICALLY — Dose is a
+     measured feed, Food is that app's Solids, Drops is the droplet it draws as
      Pump, Taps is the one clinical procedure and takes the only cool slot.
-     Reaction is deliberately NOT his: it has no equivalent in a baby tracker
+     Reaction is deliberately NOT from there: it has no equivalent in a tracker
      and an alarm must read as an alarm, so it keeps the validated --react. */
   --cat-feed:#E07650;   --cat-solids:#C7679B;  --cat-pump:#8B6FB4;
   --cat-sleep:#3D7AAB;  --cat-diaper:#D89E2C;
@@ -4501,7 +4500,7 @@ svg [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 
 .queue__count b { color: var(--peri-ink); font-weight: 600; }
 
 /* ----------------------------------------------------------------------------
-   16o · .draftchip and .draft — "Draft — for Geoff's sign-off"
+   16o · .draftchip and .draft — the provisional marker
    SPEC rule 13: four commercial figures are quoted, and ANYTHING else on a
    business frame has to be visibly provisional. That is a hard requirement, so
    the marker cannot be subtle — and it must not read as an error either, or the
@@ -6443,7 +6442,7 @@ button.moreitem:focus-visible, a.moreitem:focus-visible { outline-offset: -2px; 
    · No animation. §15's reduced-motion blanket is `*` with !important and
      already governs the handful of 110-120ms colour transitions above.
    · No new token. Every colour, radius and shadow here is composed from §01,
-     which is why the palette he called "phenom" is untouched: this section
+     which is why the approved palette is untouched: this section
      changes the DENSITY of the family app, not one hue of it.
    · No second decision card: a decision is .card--lift with two .btn children
      and no paragraph, which §05 and §07 already draw.
@@ -6744,11 +6743,10 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 /* ============================================================================
    19 · SCHEDULE — the CORE band and the OTHER band
    ----------------------------------------------------------------------------
-   Geoff, 2026-10-20: *"The schedule is the weekly schedule for the specific
-   allergy food being treated and the associated plan. … That is the core or
-   critical. and make it known."* And, for the second band: *"stuff that is
-   (OTHER) → other food groups they need to include but not a hard requirement
-   on it, can be adjusted in real time."*
+   CORE is the weekly schedule for the specific allergy food being treated and
+   the plan that goes with it — the critical band, and the screen has to say so.
+   OTHER is the food groups that still need to be included but are not a hard
+   requirement, and can be adjusted in real time.
 
    THE CONTRAST BETWEEN THE TWO BANDS IS THE FEATURE, so it is spent on four
    axes at once and has to be legible from across a room:
@@ -7019,11 +7017,11 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 /* ============================================================================
    21 · HOME, REBUILT TO THE SHIPPED APP'S OWN METRICS          HOME_SPEC §2–§7
    ----------------------------------------------------------------------------
-   Geoff: *"okay just make it look like mine w/ your color scheme. your buttons
-   suck everything is just janky and hippy, this is an app people need to use."*
+   The brief for this round was structure over invention: match a shipped app
+   people actually use, in this board's own palette.
 
    So this section copies STRUCTURE and METRICS and substitutes the PALETTE.
-   Every length below is a real value read out of his shipped app at 393pt, not
+   Every length below is a real value read out of that app at 393pt, not
    estimated off a screenshot, and it is used literally — the brief for this
    round is "do not improve on them". Every colour is a §01 token that was
    already on this canvas: cream, navy, periwinkle, coral and the validated
@@ -7346,7 +7344,7 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 }
 
 /* ----------------------------------------------------------------------------
-   21h · THE BUTTONS — the thing he called janky  (HOME_SPEC §5)
+   21h · THE BUTTONS  (HOME_SPEC §5)
    Ours were five equal 84px tiles at one radius with one shadow, which flattens
    the hierarchy entirely: `Reaction` looked exactly as important as `Dose`.
    His are TWO TIERS, AND THE SIZE GAP IS THE HIERARCHY.
@@ -7360,7 +7358,7 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 
    The 40px icon disc comes OFF. His icons are filled, coloured, literal
    objects sitting straight on the tile; a glyph in a tinted circle is a
-   list-item avatar, which is most of what read as "hippy". The disc's tint
+   list-item avatar, which is most of what read as unserious. The disc's tint
    moves to the icon's own ink, so the five actions stay five colours.
 
    The glow is var(--sh-lift) and not a fourth shadow: this file has exactly
@@ -7583,9 +7581,7 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 /* ============================================================================
    24 · REPORTS — the family app's seventh screen                HOME_SPEC §12
    ----------------------------------------------------------------------------
-   Geoff: *"throw reports mockup for the family app"*
-
-   the reference app's Reports tab is the model (read-only reference): a big ring figure
+   The reference app's Reports tab is the model (read-only reference): a big ring figure
    with a one-word state, labelled component bars, a stat strip, a goal-and-ETA
    line, Milestones as cards, and a NEXT STEP card ending in one pill. The
    SHAPE is his; the hues are ours, and A.R.T. stays cream, navy and coral.
@@ -7896,9 +7892,8 @@ button.logrow__state:focus-visible { outline-offset: 3px; }
 
 /* ----------------------------------------------------------------------------
    24 · THE CARD MATERIAL ON A PHONE  — frosted, not flat
-   Geoff: "throw some better shading into the white sections on the purple (and
-   I guess the non-purple) like my app screenshots... It is a better design on
-   mine. emulate."
+   The white sections wanted real shading rather than flat fills, on the tinted
+   backgrounds and the plain ones alike.
 
    Read out of the reference app's theme makeDuskCard(), which is three things
    our flat white card was not:

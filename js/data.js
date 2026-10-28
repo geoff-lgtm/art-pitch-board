@@ -1154,11 +1154,10 @@
      them — a day with the food logged and the drops missing is not a logged
      day. All three are CORE: they are timed and they are strict.
 
-     THE ALKA-SELTZER DOSE IS A QUESTION FOR THE ROOM. Geoff gave it as "alka
-     seltzer tab @ xyz amount", so `1 tab` is a placeholder standing in for a
-     real prescription, and it is the one figure on these screens that nobody
-     has confirmed. It is listed in the open questions for exactly that
-     reason. */
+     THE ALKA-SELTZER DOSE IS UNCONFIRMED. The brief gave it only as a tab at
+     an unspecified amount, so `1 tab` is a placeholder standing in for a real
+     prescription, and it is the one figure on these screens that nobody has
+     confirmed. It needs a real number from the practice. */
 
   var ALKA_LABEL = 'Alka-Seltzer';
   var DROP_LABEL = 'Water drops';

@@ -293,7 +293,7 @@
 
   /* ====================================================== 2 · timeline ==== */
   /* A real schedule, and an honest one. Weeks 0–6 are numbered because the
-     estimate is Geoff's and is attributed in the note. The six columns after
+     estimate is the builders' own and is attributed in the note. The six columns after
      v1 carry a dot instead of a number: QA, the pilot and the testing tracks
      run as long as the booklet says they need to, and store review is a queue
      at Apple and Google. A numbered tail would be a date nobody can promise,
@@ -822,9 +822,9 @@
          and a vendor should not be the one to label a client's data in a
          document the client is reading. The rigour is the point, and it
          stands on its own. */
-      /* PAYMENT SCHEDULE. Nothing about it was quoted — Geoff asked what dev
-         shops do, so it is a PROPOSAL and sits under the draft chip like
-         every other unquoted term. It is built from his own line items so
+      /* PAYMENT SCHEDULE. Nothing about it was quoted — it follows what dev
+         shops commonly do, so it is a PROPOSAL and sits under the draft chip
+         like every other unquoted term. It is built from the stated line items so
          the arithmetic is self-evident: the $10,000 build splits 50/50
          across signing and delivery, and the $2,500 audit is billed when
          the audit actually runs. Nothing is paid for work not yet done,
