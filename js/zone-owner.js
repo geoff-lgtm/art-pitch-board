@@ -244,8 +244,9 @@
     var definition =
       '<div class="tip" id="owner-adh-def" data-arrow="none" hidden>' +
       '<b>Adherence = every prescribed item logged &divide; items planned</b>, ' +
-      'for every date up to today &mdash; food doses, the daily drops and the ' +
-      'spine tap, one definition for all three. <b>Held</b> and <b>skipped</b> ' +
+      'for every date up to today &mdash; food doses, the morning tablet, the ' +
+      'daily drops and the spine tap, one definition for all four. ' +
+      '<b>Held</b> and <b>skipped</b> ' +
       'count as logged: the failure this fixes is <b>not knowing</b>, not a ' +
       'held dose.' +
       '<br>Last ' + m.range + ' days: <span class="mono">' + k(m.adh.logged) +
@@ -457,7 +458,9 @@
     root.innerHTML = frame({
       eyebrow: 'Owner · all centres',
       title: 'Practice overview',
-      note: 'Every figure comes from the same logs — doses, drops and the spine tap.',
+      /* Four, because the breakdown directly beneath it lists four. */
+      note: 'Every figure comes from the same logs — food doses, the tablet, ' +
+        'the drops and the spine tap.',
       url: 'overview',
       bar: 'Owner scope · all centres and independents',
       body: macroBandOne(m) + macroBandTwo() + macroBandThree(m)
@@ -555,13 +558,20 @@
     var b = m.worst;
     var food = lower(m.sel.allergen);
     var ov = r1(b.medianActual - b.plannedDays);
+    /* REPORTS, DOES NOT PRESCRIBE. This line is the largest type on the
+       frame and it used to open "Plan N days here, not M" — an instruction
+       to change a clinical plan, issued by the software to the practice.
+       The scope frame on this same board says, in as many words, that v1
+       records the protocol and never decides it. So the line states what
+       the runs did and what it costs downstream, and the decision stays
+       with the practitioner reading it. */
     if (ov >= 0.5) {
-      return 'Plan ' + r1(b.medianActual) + ' days here, not ' + r1(b.plannedDays) +
-        '; ' + food + ' finishes ' + knockOn(ov) + ' later.';
+      return 'Runs here take ' + r1(b.medianActual) + ' days against a planned ' +
+        r1(b.plannedDays) + '; ' + food + ' finishes ' + knockOn(ov) + ' later.';
     }
     if (ov <= -0.5) {
-      return 'Plan ' + r1(b.medianActual) + ' days here, not ' + r1(b.plannedDays) +
-        '; ' + food + ' finishes ' + knockOn(ov) + ' earlier.';
+      return 'Runs here take ' + r1(b.medianActual) + ' days against a planned ' +
+        r1(b.plannedDays) + '; ' + food + ' finishes ' + knockOn(ov) + ' earlier.';
     }
     return 'Every age band lands within a day of the planned ' +
       r1(b.plannedDays) + '.';

@@ -930,7 +930,7 @@
           ['weekly_plan_id', '→ weekly_plans.id', 'fk'],
           ['client_id', '→ clients.id', 'fk'],
           ['date', 'date', ''],
-          ['item_type', 'dose | drops | tapping', ''],
+          ['item_type', 'dose | alka | drops | tapping', ''],
           ['ramp_step_id', '→ ramp_steps.id', 'fk'],
           ['dose_value', 'numeric', ''],
           ['dose_unit', 'text', ''],

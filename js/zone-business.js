@@ -893,7 +893,7 @@
                'Clients, protocols, every logged dose and the tables behind them sit in ' +
                'A.R.T.&rsquo;s own Supabase project &mdash; exportable in full, at any time.') +
         clause('', 'The product is A.R.T.&rsquo;s',
-               'Proposed: A.R.T. owns the product and the schema outright; the builders ' +
+               'Proposed: A.R.T. owns the product and the schema outright; we ' +
                'keep only generic components written before this engagement.') +
       '</ul>';
 

@@ -767,8 +767,14 @@
   /* ART.prep.waitProtocol() holds the booklet's own wording for levels 3, 2
      and 1, so it is the single source. Level 0 is the exception: prep returns
      '—' because a maintenance dose renders no wait block on the phone, and
-     the ladder needs a last rung to land on. */
-  var RUNG_0 = 'Nothing at all &mdash; the food is just food now';
+     the ladder needs a last rung to land on.
+
+     That rung is DESCRIBED, not quoted. It used to read "the food is just
+     food now", which is a sentence about a child's clinical status that no
+     booklet contains and nobody at the practice wrote. The ladder's job here
+     is to show that the wait protocol ends; saying there is no wait does
+     that without putting words in a practitioner's mouth. */
+  var RUNG_0 = 'No wait protocol at this level';
 
   function wait(root) {
     var client = demo();
