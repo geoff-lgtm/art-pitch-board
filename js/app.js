@@ -351,12 +351,218 @@
     }
   }
 
+  /* ================================================== placing the hint plates
+
+     ONE LABEL PER FRAME WAS NOT ENOUGH. oneLabel() above decides WHICH control
+     keeps the text; it says nothing about WHERE the plate lands, and the plate
+     is a nowrap absolute box pinned to a fixed corner with no awareness of
+     anything around it. Measured on the live board, that produced three
+     separate ways of looking broken:
+
+       - roster: "SEE EVERY CLIENT" printed straight across the sentence
+         "8 of 16 need a decision today. Last 7 days counts every..."
+       - templates: "STRETCH THE PHASE" across "...on Sesame seeds against a
+         planned 21"
+       - builder: "PUBLISH — THE HANDOFF" ran 30px past the frame's right edge
+         and was cut off mid-word
+
+     So the plate is now PLACED, not pinned. For each candidate we measure the
+     plate, try four corners, and take the first that is entirely inside the
+     frame AND covers no text. If a control has no clean corner we move on and
+     offer the label to the next candidate; if no candidate in the frame has
+     one, the frame shows rings only. A ring already says "this is live" — a
+     word printed over a sentence says the board is broken.
+
+     Text is measured with Ranges over text NODES, not element boxes. The
+     roster collision is invisible to an element-box check: the covered words
+     live in a <p> that also contains a <strong>, so the <p> has children and
+     a leaf-element sweep skips it and reports the frame clean. */
+
+  var HINT_OBSTACLES = '.phone__screen, canvas, svg, img, table, .chart';
+
+  function plateOf(el) {
+    var cs = window.getComputedStyle(el, '::after');
+    if (!cs || !cs.content || cs.content === 'none' || cs.content === 'normal') return null;
+    var w = parseFloat(cs.width), h = parseFloat(cs.height);
+    if (!w || !h) return null;
+    return { w: w, h: h };
+  }
+
+  /* Every rect in a frame that a plate must not cover.
+
+     `skip` is the labelled element's own text — a button should not count its
+     own caption as something it collides with. But a .phone carrying a note is
+     not a control: it is the entire screen the note describes, and skipping it
+     told the engine the phone was empty space. The note then placed itself
+     straight across "Sesame 5 seeds". So a skip that would swallow the frame's
+     actual content is no skip at all: anything bigger than a control keeps its
+     contents in the obstacle set. */
+  function obstacles(frame, skip) {
+    if (skip) {
+      var sr = skip.getBoundingClientRect();
+      var fr0 = frame.getBoundingClientRect();
+      if (sr.width * sr.height > fr0.width * fr0.height * 0.2) skip = null;
+    }
+    var out = [], i;
+    var walk = document.createTreeWalker(frame, NodeFilter.SHOW_TEXT, null);
+    var n;
+    while ((n = walk.nextNode())) {
+      if (!n.nodeValue || !n.nodeValue.trim()) continue;
+      if (skip && (skip === n.parentNode || skip.contains(n.parentNode))) continue;
+      var rg = document.createRange();
+      rg.selectNodeContents(n);
+      var rs = rg.getClientRects();
+      for (i = 0; i < rs.length; i++) if (rs[i].width > 1 && rs[i].height > 1) out.push(rs[i]);
+    }
+    var hard = frame.querySelectorAll(HINT_OBSTACLES);
+    for (i = 0; i < hard.length; i++) {
+      if (skip && (skip === hard[i] || skip.contains(hard[i]) || hard[i].contains(skip))) continue;
+      var hr = hard[i].getBoundingClientRect();
+      if (hr.width > 1 && hr.height > 1) out.push(hr);
+    }
+    return out;
+  }
+
+  function hits(box, rects) {
+    for (var i = 0; i < rects.length; i++) {
+      var r = rects[i];
+      var x = Math.min(box.right, r.right) - Math.max(box.left, r.left);
+      var y = Math.min(box.bottom, r.bottom) - Math.max(box.top, r.top);
+      if (x > 1 && y > 1) return true;
+    }
+    return false;
+  }
+
+  /* four corners, in order of preference: the plate reads best above and
+     left-aligned with the thing it names, which is where it has always sat. */
+  function corners(r, p, gap) {
+    return [
+      { side: '',      dx: 0,             top: r.top - p.h - gap },
+      { side: '',      dx: r.width - p.w, top: r.top - p.h - gap },
+      { side: 'below', dx: 0,             top: r.bottom + gap },
+      { side: 'below', dx: r.width - p.w, top: r.bottom + gap },
+      /* BESIDE IT. Above and below are both blocked on a frame whose control
+         is boxed in vertically — a phone has its caption directly above and
+         the frame's own edge directly below — but a 1100px frame holding a
+         390px device has room either side. Without these two the engine had
+         no answer for any phone and the whole of section 2 went ring-only. */
+      { side: '',      dx: r.width + gap, top: r.top },
+      { side: '',      dx: -(p.w + gap),  top: r.top }
+    ];
+  }
+
+  function placeOne(el, frame, fr, rects, gap) {
+    var p = plateOf(el);
+    if (!p) return false;
+    var r = el.getBoundingClientRect();
+    var cand = corners(r, p, gap);
+    for (var i = 0; i < cand.length; i++) {
+      var c = cand[i];
+      var box = { left: r.left + c.dx, top: c.top, right: r.left + c.dx + p.w, bottom: c.top + p.h };
+      if (box.left < fr.left || box.right > fr.right) continue;
+      if (box.top < fr.top || box.bottom > fr.bottom) continue;
+      if (hits(box, rects)) continue;
+      if (c.side) el.setAttribute('data-hint', 'below');
+      else el.removeAttribute('data-hint');
+      el.style.setProperty('--hint-l', Math.round(c.dx) + 'px');
+      /* A side placement is the only one the stylesheet cannot express on its
+         own: above/below are its two anchors, and beside-it needs the plate's
+         bottom pinned level with the control's top rather than above it. */
+      if (c.dx < 0 || c.dx > r.width - p.w + 1) {
+        el.style.setProperty('--hint-b', 'calc(100% - ' + Math.round(p.h) + 'px)');
+      } else {
+        el.style.removeProperty('--hint-b');
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /* A phone's note is mounted into the caption head, which has slack below the
+     subtitle and nothing to collide with. See app.css §16 for why it cannot be
+     a pseudo-element on .phone. */
+  function mountNote(frame) {
+    var ph = frame.querySelector('.phone[data-live-note]');
+    var head = frame.querySelector('.zone__head');
+    var have = frame.querySelector('.livenote');
+    if (!ph || !head) {
+      if (have) have.parentNode.removeChild(have);
+      return;
+    }
+    var text = ph.getAttribute('data-live-note') || '';
+    if (!have) {
+      have = document.createElement('p');
+      have.className = 'livenote';
+      head.appendChild(have);
+    }
+    if (have.textContent !== text) have.textContent = text;
+  }
+
+  function placeFrame(frame) {
+    mountNote(frame);
+    var all = frame.querySelectorAll('[data-live]');
+    var cands = [], i, el;
+    for (i = 0; i < all.length; i++) {
+      el = all[i];
+      var tg = el.tagName.toLowerCase();
+      if (tg === 'input' || tg === 'select' || tg === 'textarea' || tg === 'tr') continue;
+      /* Inside .phone__screen the ring IS the whole hint and the plate is
+         reverted to a plain static pseudo — but COMPONENTS put their own
+         ::after glyphs on those same nodes, and a ticked row's check mark
+         measured as a plate 16px wide. The engine then "placed" a check mark,
+         spent the frame's one label on it, and left the real note quiet: that
+         is why the Schedule phone showed a floating tick and no caption.
+         Nothing in a phone screen is ever a hint plate. */
+      if (el.closest && el.closest('.phone__screen')) continue;
+      el.style.removeProperty('--hint-l');
+      el.style.removeProperty('--hint-b');
+      if (el.getAttribute('data-hint-auto') === 'quiet') {
+        el.removeAttribute('data-hint');
+        el.removeAttribute('data-hint-auto');
+      }
+      cands.push(el);
+    }
+    if (!cands.length) return;
+
+    var fr = frame.getBoundingClientRect();
+    /* scale-aware gap: every rect here is in screen space, and the world is
+       under a transform, so a flat 4px would shrink with the zoom. */
+    var sc = fr.width / (frame.offsetWidth || fr.width) || 1;
+    var gap = 4 * sc;
+
+    var placed = false;
+    for (i = 0; i < cands.length; i++) {
+      el = cands[i];
+      if (!placed && placeOne(el, frame, fr, obstacles(frame, el), gap)) {
+        placed = true;
+        continue;
+      }
+      /* no clean corner, or the frame already has its one label: ring only */
+      el.setAttribute('data-hint', 'quiet');
+      el.setAttribute('data-hint-auto', 'quiet');
+    }
+  }
+
+  var placeQueued = false;
+  function placeHints() {
+    if (placeQueued) return;
+    placeQueued = true;
+    window.requestAnimationFrame(function () {
+      placeQueued = false;
+      var world = document.getElementById('art-world');
+      if (!world || world.className.indexOf('world--hints') === -1) return;
+      var frames = document.querySelectorAll('.world [id^="z-"]');
+      for (var i = 0; i < frames.length; i++) placeFrame(frames[i]);
+    });
+  }
+
   function draw(key) {
     var el = roots[key];
     var fn = RENDER[key];
     if (!el || typeof fn !== 'function') return;
     try {
       ui.keepFocus(el, function () { fn(el); oneLabel(el); });
+      placeHints();
     } catch (e) {
       if (window.console && window.console.error) {
         window.console.error('[ART] frame "' + key + '" failed to render', e);
@@ -437,6 +643,7 @@
       var t = e.target;
       if (!t || !t.getAttribute || t.getAttribute('data-action') !== 'hints') return;
       store.set({ hints: !!t.checked });
+      placeHints();
     });
   }
 
@@ -508,6 +715,7 @@
        walkthroughs, and then frames the `handoff` waypoint. It never fits the
        world — the board does not open zoomed out. */
     ART.canvas.init();
+    placeHints();
   }
 
   if (document.readyState === 'loading') {

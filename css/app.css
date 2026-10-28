@@ -2496,11 +2496,21 @@ button.chip[aria-pressed='true'] {
        <div class="phone" data-live-note="Tap a row to log">
    One note per phone, not one per control. */
 .world--hints .phone__screen [data-live]::after { content: none; }
-.world--hints .phone[data-live-note] { position: relative; }
-.world--hints .phone[data-live-note]::after {
-  content: attr(data-live-note);
-  position: absolute;
-  left: 0; top: 100%;
+/* THE PHONE NOTE IS A REAL ELEMENT, NOT A PSEUDO — and it has to be.
+   .phone::after is ALREADY TAKEN: it is the side button and volume rocker
+   (2px wide, 62px tall, right:-2px). A `.phone[data-live-note]::after` rule
+   targets that SAME pseudo-element, so the two merged — the note repainted
+   the phone's hardware button coral, stretched it to the width of the string,
+   and printed the text out of the side of it. On screen that read as a coral
+   capsule floating in the margin with white words spilling off it. It was
+   never a mispositioned label; it was the volume rocker wearing its paint.
+
+   ART.ui.placeHints() now mounts a .livenote into the frame's caption head,
+   which has 77px of measured slack below the subtitle and cannot collide. */
+.livenote { display: none; }
+.world--hints .livenote {
+  display: inline-flex;
+  align-self: flex-start;
   margin-top: var(--s-2);
   padding: var(--s-1) var(--s-2);
   font: 600 12px/1.5 var(--font-ui);
@@ -2511,7 +2521,6 @@ button.chip[aria-pressed='true'] {
   background: var(--coral);
   border-radius: var(--r-pill);
   box-shadow: var(--sh-card);
-  pointer-events: none;
 }
 .world--hints [data-live]:not(input):not(select):not(textarea)::after {
   content: attr(data-live);
@@ -2524,6 +2533,10 @@ button.chip[aria-pressed='true'] {
   letter-spacing: .08em;
   text-transform: uppercase;
   white-space: nowrap;
+  /* .phone is display:flex, and shrink-to-fit resolved this plate to 16px —
+     its padding, with zero content width — so the text rendered outside its
+     own background. max-content sizes to the string and cannot collapse. */
+  width: max-content;
   color: var(--card);
   background: var(--coral);
   border-radius: var(--r-pill);
@@ -2532,12 +2545,21 @@ button.chip[aria-pressed='true'] {
 }
 /* anything carrying a hint label needs a positioning context */
 .world--hints [data-live]:not(input):not(select):not(textarea) { position: relative; }
+/* --hint-l is set by ART.ui.placeHints() on the few plates whose nowrap width
+   would otherwise run past their frame's edge; default 0 keeps left alignment. */
+.world--hints [data-live]:not(input):not(select):not(textarea)::after {
+  left: var(--hint-l, 0);
+  /* --hint-b is set only for a BESIDE placement, where the plate sits level
+     with the top of the control instead of stacked above it. */
+  bottom: var(--hint-b, 100%);
+}
 .world--hints [data-live][data-hint='below']::after { top: 100%; bottom: auto; margin: 4px 0 0; }
 /* a repeated control is ringed ONCE. Seven ringed steppers in one pane reads as a
    debug overlay, not as an invitation — the first row carries ring and label for all
    seven, exactly as the roster's one label covers sixteen rows. */
 .world--hints [data-live][data-hint='quiet'] { outline: none; }
 .world--hints [data-live][data-hint='quiet']::after { content: none; }
+
 
 /* Route B: the same ring and the same plate, for the elements a pseudo-element
    cannot reach (inputs, selects, the table rows the canvas tracks). */
@@ -2557,6 +2579,10 @@ button.chip[aria-pressed='true'] {
   letter-spacing: .08em;
   text-transform: uppercase;
   white-space: nowrap;
+  /* .phone is display:flex, and shrink-to-fit resolved this plate to 16px —
+     its padding, with zero content width — so the text rendered outside its
+     own background. max-content sizes to the string and cannot collapse. */
+  width: max-content;
   color: var(--card);
   background: var(--coral);
   border-radius: var(--r-pill);
