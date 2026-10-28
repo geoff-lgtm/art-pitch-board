@@ -180,9 +180,9 @@
           measured nowhere today. One sentence. That is the hinge of the pitch
           and it belongs above everything else on the board.
        2  the CREDENTIAL, held to one line in .meta on the right, where a
-          standfirst sits in a newspaper. Verbatim per SPEC §4c — FlipaClip's
-          150M users and the Apple App of the Year award, Planet Fitness's
-          product organisation, and an A.R.T. family. Stated, not argued:
+          standfirst sits in a newspaper. Two names and three facts — FlipaClip
+          and Cradle, 150M users, the Apple App of the Year WIN; Head of
+          Product at Planet Fitness; and an A.R.T. family. Stated, not argued:
           the line names the three credentials and draws no conclusion from
           them. Weight is spent inside the line (the names, the figure), never
           by breaking it into a paragraph: a two-line credential pushes the
@@ -194,12 +194,17 @@
      40 words of prose in the whole banner. Everything else here is a name, a
      figure or a key. */
 
-  /* SPEC §4c, to the character. Emphasis is markup INSIDE the sentence, so the
-     string still reads exactly as written. Do not re-punctuate it. */
+  /* Two names, three facts, no hedging. The previous line said "the team
+     behind FlipaClip" and "Planet Fitness's product organisation" — both
+     vague about who actually did what, and the second was simply wrong:
+     Lisa IS the Head of Product for Planet Fitness, not a reference to
+     their org. The award reads as WON, because naming an award is not the
+     same as saying you won it. */
   var CREDENTIAL =
-    'Built by the team behind <strong>FlipaClip</strong> &mdash; ' +
-    '<span class="num">150M</span> users, Apple App of the Year &mdash; and ' +
-    'Planet Fitness\'s product organisation. And by an <strong>A.R.T. family</strong>.';
+    '<strong>Geoff Hladik</strong> &mdash; built FlipaClip and Cradle, ' +
+    '<span class="num">150M</span> users, winner of Apple App of the Year. ' +
+    '<strong>Lisa Debenedictis</strong> &mdash; Head of Product, Planet Fitness. ' +
+    'And an <strong>A.R.T. family</strong>.';
 
   function title(root) {
     var banner =

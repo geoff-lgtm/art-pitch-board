@@ -1135,7 +1135,7 @@
         E(proto.allergen) + ' <span class="mono">' + E(prep.household(d)) + '</span> · ' +
         '<span class="mono">' + E(ui.clock(d.timing)) + '</span></span>';
     }
-    /* the two items nobody writes down ride along too (SPEC §5a) */
+    /* the two items the booklet has no room for ride along too (SPEC §5a) */
     var items = ART.protocolItems ? ART.protocolItems(client.id) : [];
     for (var k = 0; k < items.length; k++) {
       chips += '<span class="chip chip--neutral">' + E(items[k].label) +

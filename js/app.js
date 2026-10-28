@@ -331,12 +331,32 @@
      Wrapped in try/catch so one broken surface cannot take the board with it: a
      frame that throws leaves the other twenty-eight on screen and says so once
      in the console, instead of killing the pan engine before it is even bound. */
+  /* ONE HINT LABEL PER FRAME — applied here, immediately after the frame's own
+     markup lands, because anywhere else is a race: the renderer rewrites
+     innerHTML and the fresh nodes carry data-live again, so a rule applied
+     before the draw is wiped by the draw it was meant to correct.
+     Every live control keeps its coral ring. Only the first in the frame keeps
+     the TEXT label. Two labels in one frame converge on the gap between their
+     anchors and land on whatever sits there — the roster had "see every client"
+     rendering downward and "open a client" rendering upward, meeting on the
+     "8 of 16 need a decision" line. The ring says "this is live"; the label
+     only has to say it once. */
+  function oneLabel(el) {
+    var live = el.querySelectorAll('[data-live]');
+    var seen = false;
+    for (var i = 0; i < live.length; i++) {
+      if (live[i].getAttribute('data-hint') === 'quiet') continue;
+      if (seen) live[i].setAttribute('data-hint', 'quiet');
+      else seen = true;
+    }
+  }
+
   function draw(key) {
     var el = roots[key];
     var fn = RENDER[key];
     if (!el || typeof fn !== 'function') return;
     try {
-      ui.keepFocus(el, function () { fn(el); });
+      ui.keepFocus(el, function () { fn(el); oneLabel(el); });
     } catch (e) {
       if (window.console && window.console.error) {
         window.console.error('[ART] frame "' + key + '" failed to render', e);
@@ -408,6 +428,7 @@
       if (a === 'replay') { onReplay(); return; }
       if (a === 'reset') { onReset(); return; }
     });
+
 
     /* The switch writes the store; canvas.js reflects .world--hints FROM store
        state, so both paths land in one place and a double-bind is a no-op

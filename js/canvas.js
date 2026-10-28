@@ -375,7 +375,8 @@
 
   var SECTIONS = [
     { n: 1, y:   360, title: 'The problem', track: 'product',
-      line: 'One child, three foods, a paper booklet, and everything no one writes down.',
+      /* section lines are set as TEXT, not HTML — a literal glyph, never an entity */
+      line: 'One child, three foods, a paper booklet, and the rest carried in a parent’s head.',
       /* y:40, not 320. The banner ends at y260 and a door opening at y320
          started 26px below it, so the board's own "How to read this board"
          strip — the one thing a reader with nobody presenting needs first —
@@ -805,7 +806,7 @@
         { n: 1, key: 'booklet',      title: 'The booklet',          pulse: 'booklet',
           line: 'Every line is the same six fields. It is already a schema with no screen.' },
         { n: 2, key: 'burden',       title: 'What else they carry', pulse: 'burden',
-          line: 'Three protocols at once — plus drops and tapping nobody writes down.' },
+          line: 'Three protocols at once — plus the drops and the tap the page has no room for.' },
         { n: 3, key: 'family-day',   title: 'The day',              pulse: 'ph-home',
           line: 'The whole day on one screen: drops, the spine tap, and every dose in order.' },
         { n: 4, key: 'family-ideas', title: 'Meal ideas',           pulse: 'ph-meals',

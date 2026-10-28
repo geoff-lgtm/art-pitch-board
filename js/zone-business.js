@@ -477,12 +477,10 @@
      Apple award keeps its own device because an award is not a number: a rule
      above, a rule below, letter-spaced navy caps. Named, and not explained.
 
-     Lisa is named with her FIRST NAME ONLY, exactly as given in SPEC §6.8 and
-     NOTES §C, and no pronoun for her appears anywhere in this frame — the copy
-     is written around it. Both names live in NAMES below, so the one thing in
-     this file most likely to need a correction is a one-line change. */
+     Both names live in NAMES below, so a correction is a one-line change — which
+     is how 'Lisa' became 'Lisa Debenedictis' without touching the markup. */
 
-  var NAMES = { built: 'Geoff Hladik', product: 'Lisa' };
+  var NAMES = { built: 'Geoff Hladik', product: 'Lisa Debenedictis' };
 
   function team(root) {
     var geoff =
@@ -509,9 +507,12 @@
       '<div class="team__col">' +
         '<p class="team__role">Client family</p>' +
         '<p class="team__name">An A.R.T. family</p>' +
+        /* PRESENT TENSE. "Worked through" made them alumni; they are a client
+           family right now, mid-protocol, which is the whole reason the
+           credential carries weight — they use the booklet this week. */
         '<p class="team__of">Their son is a client of the practice.</p>' +
-        '<p class="team__figure">~20<small>allergies, worked through one at a ' +
-          'time.</small></p>' +
+        '<p class="team__figure">~20<small>allergies, working through them ' +
+          'one at a time.</small></p>' +
         /* .team__award, not .team__of. The bottom slot of this repeated row
            closes on a 2px --navy-deep rule in columns 1 and 2 and closed on
            nothing in column 3 — and column 3 is the credential that matters
