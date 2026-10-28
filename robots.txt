@@ -1,0 +1,3 @@
+# A client proposal, not a public page. Shareable by link; not for indexing.
+User-agent: *
+Disallow: /

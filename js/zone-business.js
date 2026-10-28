@@ -763,9 +763,9 @@
     var figures =
       '<div class="price">' +
         '<div class="price__line" data-emph>' +
-          '<p class="price__label">Up front</p>' +
+          '<p class="price__label">To build it</p>' +
           '<p class="price__figure">' + UP_FRONT +
-            '<small>to build and ship v1</small></p>' +
+            '<small>paid across three stages</small></p>' +
           '<p class="meta" style="margin-top:4px">' +
             BUILD_FEE + ' build &middot; ' + SEC_FEE +
             ' third-party security audit</p>' +
@@ -802,6 +802,26 @@
          and a vendor should not be the one to label a client's data in a
          document the client is reading. The rigour is the point, and it
          stands on its own. */
+      /* PAYMENT SCHEDULE. Nothing about it was quoted — Geoff asked what dev
+         shops do, so it is a PROPOSAL and sits under the draft chip like
+         every other unquoted term. It is built from his own line items so
+         the arithmetic is self-evident: the $10,000 build splits 50/50
+         across signing and delivery, and the $2,500 audit is billed when
+         the audit actually runs. Nothing is paid for work not yet done,
+         which is the whole objection to an all-up-front quote. */
+      draft('<div>' +
+        eyebrow('How it is paid') +
+        '<ul class="list" style="margin-top:6px">' +
+          clause('01', '$5,000 on signing',
+                 'Half the build. Work starts the same week.') +
+          clause('02', '$5,000 on v1 delivery',
+                 'The other half, when v1 is handed over for QA.') +
+          clause('03', '$2,500 before launch',
+                 'The third-party audit, billed when it runs.') +
+        '</ul>' +
+        '<p class="meta" style="margin-top:8px">The ' + MONTHLY +
+          ' starts at launch, not at signing.</p>' +
+      '</div>') +
       '<div style="margin-top:18px">' +
         eyebrow('Independent third-party audit') +
         '<p class="lede" style="margin-top:6px">Before launch, the build ' +

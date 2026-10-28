@@ -18,7 +18,7 @@
   /* ---------------------------------------------------------------- constants */
 
   var W = 4200;            /* world width  — §4c, authoritative */
-  var H = 12054;           /* world height — §4c, less the 226 section 2 gave
+  var H = 12354;           /* world height — §4c, less the 226 section 2 gave
                               back when every frame in it took the device's
                               real ratio. 12280 − 226. See LAYOUT. */
   var Z_MIN = 0.3;         /* setZoom clamp */
@@ -325,9 +325,9 @@
        app.css §16p and the head and the grid finally share one left edge
        (they were 167px apart). Its waypoint follows to w1160, z=1.002. */
     team:          { x:   80, y: 10314, w: 1100, h:  420, s: 8, role: 'owner',        label: 'Who builds it' },
-    scope:         { x:   80, y: 10954, w: 1540, h: 1020, s: 8, role: 'owner',        label: 'What v1 includes' },
-    pricing:       { x: 1700, y: 10954, w: 1240, h: 1020, s: 8, role: 'owner',        label: 'What it costs' },
-    terms:         { x: 3020, y: 10954, w: 1100, h: 1020, s: 8, role: 'owner',        label: 'Terms, and for the room' }
+    scope:         { x:   80, y: 10954, w: 1540, h: 1320, s: 8, role: 'owner',        label: 'What v1 includes' },
+    pricing:       { x: 1700, y: 10954, w: 1240, h: 1320, s: 8, role: 'owner',        label: 'What it costs' },
+    terms:         { x: 3020, y: 10954, w: 1100, h: 1320, s: 8, role: 'owner',        label: 'Terms, and for the room' }
   };
 
   /* Reading order, which is also DOM order for the map and the layout pass. */
