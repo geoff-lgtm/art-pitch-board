@@ -112,13 +112,24 @@
      board does not actually render: the family phones are the §2 frames whose
      key is a phone. ph-handoff is in §3 and is correctly excluded. */
   function familyScreens() {
+    return familyScreenNames().length;
+  }
+
+  /* THE NAMES, READ OFF THE FRAMES THEMSELVES. The count here was already
+     derived from LAYOUT, but the names beside it were typed by hand — and
+     they had drifted to "Today, Prep, The week, Meals, Community, Messages":
+     six names under the word "seven", four of which name no screen on this
+     board. The scope frame is the one that says what v1 includes, so it was
+     promising a clinic two screens that do not exist. Reading the labels back
+     out of LAYOUT means the sentence cannot disagree with the board again. */
+  function familyScreenNames() {
     var L = (ART.canvas && ART.canvas.LAYOUT) || null;
-    if (!L) return 0;
-    var n = 0;
-    Object.keys(L).forEach(function (k) {
-      if (L[k] && L[k].s === 2 && k.indexOf('ph-') === 0) n++;
+    if (!L) return [];
+    var keys = Object.keys(L).filter(function (k) {
+      return L[k] && L[k].s === 2 && k.indexOf('ph-') === 0;
     });
-    return n;
+    keys.sort(function (a, b) { return (L[a].x - L[b].x) || (L[a].y - L[b].y); });
+    return keys.map(function (k) { return L[k].label; });
   }
 
   /* One row of the architecture table. FIVE CELLS, in the same order every
@@ -608,9 +619,10 @@
     var inV1 =
       '<ul class="price__covers">' +
         ledger('yes', '<span class="mono">&sect;2</span> The family app',
-               (screens ? 'All ' + word(screens) + ' screens: ' : '') +
-               'Today, Prep, The week, Meals, Community, Messages. Drops, the spine ' +
-               'tap and every food dose in one day, in the order the day happens.') +
+               (screens ? 'All ' + word(screens) + ' screens: ' +
+                 familyScreenNames().join(', ') + '. ' : '') +
+               'Drops, the spine tap and every food dose in one day, in the ' +
+               'order the day happens.') +
         ledger('yes', '<span class="mono">&sect;2</span> Messages, family to practitioner',
                'One thread per client, and a message can be anchored to the exact day ' +
                'it is about. This is what replaces &ldquo;or email me&rdquo; in the ' +
@@ -790,10 +802,8 @@
             ' third-party security audit</p>' +
         '</div>' +
         /* The rate and the term are ONE fact, not two. Listing "Minimum term"
-           on its own row read as a separate condition bolted on; the monthly
-           IS the two-year rate, which is a stronger position — it implies a
-           different number without the commitment, without naming one — and
-           it stops the same fact appearing twice on one frame. */
+           on its own row read as a separate condition bolted on, and it put
+           the same fact on the frame twice. */
         '<div class="price__line" data-emph>' +
           '<p class="price__label">Monthly</p>' +
           '<p class="price__figure">' + MONTHLY +
@@ -816,12 +826,10 @@
         '</ul>' +
       '</div>' +
       /* The audit is quoted and sits beside the figure, because it is the
-         reason the up-front moved. The copy does NOT characterise the data
-         it protects: whose records these are, and under which regime, is a
-         question still open with the practice (SPEC rule 13 / NOTES §B1),
-         and a vendor should not be the one to label a client's data in a
-         document the client is reading. The rigour is the point, and it
-         stands on its own. */
+         reason the up-front moved. The copy does not characterise the records
+         it protects: how they are classified is the practice's call, not a
+         vendor's, and it is not settled in a document the client is reading.
+         The rigour is the point and it stands on its own. */
       /* PAYMENT SCHEDULE. Nothing about it was quoted — it follows what dev
          shops commonly do, so it is a PROPOSAL and sits under the draft chip
          like every other unquoted term. It is built from the stated line items so

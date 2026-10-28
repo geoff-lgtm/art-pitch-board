@@ -1087,8 +1087,18 @@
         }).join(', ')
       : 'Every one of them logged, so far this week';
 
+    /* ONE LABEL PER KIND. This was a two-way ternary — drops, or else "spine
+       taps" — and the kinds that reach it are 'alka', 'drops' and 'tapping'.
+       So the seven weekly Alka-Seltzer tablets printed as "7 spine taps", and
+       the frame told an allergy practice the child receives NINE spinal taps
+       a week beside a plan that says two. A clinic reads that number first. */
+    var KIND_LABEL = {
+      alka:    'Alka-Seltzer tablets',
+      drops:   'days of drops',
+      tapping: 'spine taps'
+    };
     var kinds = Object.keys(byKind).map(function (k) {
-      return byKind[k] + ' ' + (k === 'drops' ? 'days of drops' : 'spine taps');
+      return byKind[k] + ' ' + (KIND_LABEL[k] || k);
     }).join(', ');
 
     var figures =

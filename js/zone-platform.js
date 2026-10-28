@@ -1187,11 +1187,15 @@
           '</tbody>' +
         '</table>' +
       '</div>' +
-      /* The schema declares 22 tables and the policy list names 14, so the
-         remaining eight are stated here rather than left for a reader to
-         notice. They are the protocol library and the practice itself: one
-         rule covers all seven, and auth.users is not ours to police. */
-      '<p class="meta" style="margin-top:7px"><strong>The other eight:</strong> ' +
+      /* The schema declares 22 tables and the policy list names 14. Seven of
+         the remaining eight are stated here — the protocol library and the
+         practice itself, where one rule covers all seven — and the eighth,
+         auth.users, is named after them because it is not ours to police. */
+      /* "The other eight" followed by seven names, with auth.users accounted
+         for in a separate sentence after it — so a reader counts seven and
+         stops. Seven is the number of tables WE police here; auth.users is
+         named on its own because it is not ours. */
+      '<p class="meta" style="margin-top:7px"><strong>The other seven:</strong> ' +
         '<span class="mono">organizations &middot; centres &middot; practitioners ' +
         '&middot; protocols &middot; phases &middot; ramp_steps &middot; ' +
         'conditions</span> &mdash; read by every practitioner, written by the ' +
