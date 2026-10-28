@@ -593,27 +593,58 @@
     }
   }
 
-  /* RE-ENTRANT, because a swallowed request is a silent miss. The old guard
-     dropped any call that arrived while a pass was already queued — and boot
-     draws thirty frames in a synchronous loop, so twenty-nine requests were
-     dropped and the one that ran measured frames that were later re-rendered,
-     wiping every --hint-l it had just set. The board then opened with the
-     plates back at their unplaced defaults, which is exactly what it looked
-     like. A request during a pass now marks it dirty and runs again. */
+  /* SCHEDULING. This used to be requestAnimationFrame and nothing else, and
+     rAF DOES NOT FIRE IN A HIDDEN TAB. Open the board's link in a background
+     tab — which is what "open in new tab" and a restored session both do —
+     and the placement pass never ran at all: no plate was positioned, no
+     phone note was mounted, and the board stayed at its unplaced defaults
+     until the tab was focused. Measured: document.visibilityState 'hidden',
+     rAF callback never invoked, 0 of 2 notes mounted, 0 plates placed.
+
+     So: rAF when it will actually fire, a timer otherwise, whichever comes
+     first, and the pass is idempotent so a double-run is harmless.
+
+     Re-entrant too, because a swallowed request is a silent miss: boot()
+     draws thirty frames in a synchronous loop, and the old guard dropped
+     every request that arrived while one was queued — so 29 were lost and
+     the one that ran measured frames that were re-rendered afterwards,
+     wiping its work. A request during a pass marks it dirty and runs again. */
   var placeQueued = false, placeDirty = false;
+
+  function runPlacement() {
+    if (!placeQueued) return;
+    placeQueued = false;
+    var world = document.getElementById('art-world');
+    if (world && world.className.indexOf('world--hints') !== -1) {
+      var frames = document.querySelectorAll('.world [id^="z-"]');
+      for (var i = 0; i < frames.length; i++) placeFrame(frames[i]);
+    }
+    if (placeDirty) { placeDirty = false; placeHints(); }
+  }
+
   function placeHints() {
     if (placeQueued) { placeDirty = true; return; }
     placeQueued = true;
-    window.requestAnimationFrame(function () {
-      placeQueued = false;
-      var world = document.getElementById('art-world');
-      if (world && world.className.indexOf('world--hints') !== -1) {
-        var frames = document.querySelectorAll('.world [id^="z-"]');
-        for (var i = 0; i < frames.length; i++) placeFrame(frames[i]);
-      }
-      if (placeDirty) { placeDirty = false; placeHints(); }
-    });
+    if (document.visibilityState !== 'hidden' && window.requestAnimationFrame) {
+      window.requestAnimationFrame(runPlacement);
+    }
+    /* The fallback always runs. If rAF got there first, placeQueued is
+       already false and this is a no-op. */
+    window.setTimeout(runPlacement, 80);
   }
+
+  /* The board's frames are fixed world geometry, so a resize does not reflow
+     them — but the clipping boxes a plate is tested against are read from the
+     live layout, and nothing recomputed them when the window changed. And a
+     tab that boots hidden has to place as soon as it is looked at. */
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (resizeTimer) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(placeHints, 120);
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState !== 'hidden') placeHints();
+  });
 
   function draw(key) {
     var el = roots[key];

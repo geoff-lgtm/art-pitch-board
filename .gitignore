@@ -11,3 +11,4 @@ DESIGN_PASS.md
 
 # Audit scratch — a rendered-text dump, regenerated on demand.
 .audit-rendered.txt
+.audit.js

@@ -290,7 +290,13 @@
        540 to take it, leaving 68px still hidden — closing the last 68 needs
        the section-3 BAND to grow, which cascades sections 4-8 and the world
        height, so it is reported rather than done here. */
-    roster:        { x:   80, y:  3384, w: 1320, h: 1390, s: 3, role: 'practitioner', label: 'Roster' },
+    /* h 1390 -> 1448. .window fills the frame (height:var(--win-h,100%)), so
+       the only way to give .window__body more room is to give the FRAME more.
+       Showing all sixteen roster rows pushed the body 41px past its height and
+       overflow:hidden then sliced the coverage list underneath instead — one
+       clipped list traded for another. +58 clears it with headroom. The next
+       frame down (macro, y:4974) still has 142px of air beneath this one. */
+    roster:        { x:   80, y:  3384, w: 1320, h: 1448, s: 3, role: 'practitioner', label: 'Roster' },
     builder:       { x: 1480, y:  3384, w: 1240, h: 1320, s: 3, role: 'practitioner', label: 'Week builder' },
     'ph-handoff':  { x: 2850, y:  3384, w:  390, h: FAM_H, s: 3, role: 'family',      label: 'The same day, on the phone' },
     templates:     { x: 3320, y:  3384, w:  800, h: 1320, s: 3, role: 'practitioner', label: 'Template editor' },

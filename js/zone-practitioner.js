@@ -75,16 +75,17 @@
      The table takes the full width because seven honest columns need it, and
      the focused client sits underneath with one column per concurrent
      protocol — which is the only way three ramps are legible at once. */
-  /* 470 -> 540, UX audit 2026-10-28. Measured clientHeight 470 against
-     scrollHeight 608: 138px, a fifth of the 16-row client list, behind an
-     inner scrollbar. canvas.js grew the frame 1320 -> 1390, which is every
-     pixel section 3's band has spare, and this takes all 70 of it. 68px is
-     still hidden; closing it needs the section-3 band to grow, which
-     cascades sections 4-8 and the world height. Reported, not done here. */
-  var ROSTER_TBL_H = 540;          /* a part row at the cut says there is more;
-                                      26px of it went to the finished-phase
-                                      rows §5d/NOTES §B3 require in the detail
-                                      panel, which has no slack of its own     */
+  /* 470 -> 540 -> 608. The note that used to sit here said closing the last
+     68px needed the section-3 band to grow and cascade sections 4-8. That was
+     wrong: the frame is 1390 and the window inside it measured 1272, so there
+     were 118px of unused slack INSIDE the frame all along. 608 is the table's
+     own scrollHeight, so all sixteen rows stand and nothing is hidden.
+
+     It mattered because the cut did not land between rows — it sliced through
+     the middle of two of them, so the board showed half of "Yusuf L." and a
+     clipped 57px of the row under it. A part row can say "there is more" in a
+     product; in a pitch sent cold it just reads as broken. */
+  var ROSTER_TBL_H = 608;
   var PHASE_COL_RAMP = 380;        /* usable width of one protocol column     */
 
   /* --- builder geometry ---------------------------------------------------
