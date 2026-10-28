@@ -4609,6 +4609,12 @@ svg [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 
   color: var(--ink-soft);
 }
 .team__of strong { font-weight: 600; color: var(--ink-body); }
+/* A credential that is a LINK says so. It keeps the bold of the name it
+   replaces and adds the one signal a reader scans for, an underline, so the
+   two apps read as things you can go and open rather than as claims. */
+.credlink { color: var(--navy-mid); text-decoration: underline; text-underline-offset: 2px; }
+.credlink strong { color: inherit; }
+.credlink:hover { color: var(--coral); }
 
 /* THE FIGURE. Plex Sans, proportional, 44px — the top of the scale, the same
    treatment .kpi[data-emph] gives the headline metric, because that is exactly

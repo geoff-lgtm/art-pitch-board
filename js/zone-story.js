@@ -201,7 +201,7 @@
      their org. The award reads as WON, because naming an award is not the
      same as saying you won it. */
   var CREDENTIAL =
-    '<strong>Geoff Hladik</strong> &mdash; built FlipaClip and Cradle, ' +
+    '<strong>Geoff Hladik</strong> &mdash; built ' + '<a class="credlink" href="https://apps.apple.com/us/app/flipaclip-draw-2d-animation/id1101848914" target="_blank" rel="noopener noreferrer"><strong>FlipaClip</strong></a> and ' + '<a class="credlink" href="https://apps.apple.com/us/app/cradle-baby-tracker/id6764861171" target="_blank" rel="noopener noreferrer"><strong>Cradle</strong></a>, ' +
     '<span class="num">150M</span> users, winner of Apple App of the Year. ' +
     '<strong>Lisa Debenedictis</strong> &mdash; Head of Product, Planet Fitness. ' +
     'And an <strong>A.R.T. family</strong>.';

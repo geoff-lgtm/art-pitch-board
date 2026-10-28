@@ -397,26 +397,37 @@
      straight across "Sesame 5 seeds". So a skip that would swallow the frame's
      actual content is no skip at all: anything bigger than a control keeps its
      contents in the obstacle set. */
-  function obstacles(frame, skip) {
-    if (skip) {
-      var sr = skip.getBoundingClientRect();
-      var fr0 = frame.getBoundingClientRect();
-      if (sr.width * sr.height > fr0.width * fr0.height * 0.2) skip = null;
-    }
+  function obstacles(frame, owner) {
     var out = [], i;
+
+    /* `owner` is the element the plate names. Its TEXT is not an obstacle —
+       a button should not collide with its own caption — but its BOX always
+       is: a plate that lands on its own button hides the thing it points at.
+       And when the owner is not a control but something frame-sized (a phone
+       is the whole screen the note describes), skipping its text would tell
+       the engine the frame was empty, so only a small owner gets that pass. */
+    var skipText = null;
+    if (owner) {
+      var own = owner.getBoundingClientRect();
+      var fr0 = frame.getBoundingClientRect();
+      if (own.width > 1 && own.height > 1) out.push(own);
+      if (own.width * own.height <= fr0.width * fr0.height * 0.2) skipText = owner;
+    }
+
     var walk = document.createTreeWalker(frame, NodeFilter.SHOW_TEXT, null);
     var n;
     while ((n = walk.nextNode())) {
       if (!n.nodeValue || !n.nodeValue.trim()) continue;
-      if (skip && (skip === n.parentNode || skip.contains(n.parentNode))) continue;
+      if (skipText && (skipText === n.parentNode || skipText.contains(n.parentNode))) continue;
       var rg = document.createRange();
       rg.selectNodeContents(n);
       var rs = rg.getClientRects();
       for (i = 0; i < rs.length; i++) if (rs[i].width > 1 && rs[i].height > 1) out.push(rs[i]);
     }
+
     var hard = frame.querySelectorAll(HINT_OBSTACLES);
     for (i = 0; i < hard.length; i++) {
-      if (skip && (skip === hard[i] || skip.contains(hard[i]) || hard[i].contains(skip))) continue;
+      if (owner && (owner === hard[i] || owner.contains(hard[i]) || hard[i].contains(owner))) continue;
       var hr = hard[i].getBoundingClientRect();
       if (hr.width > 1 && hr.height > 1) out.push(hr);
     }
@@ -433,42 +444,54 @@
     return false;
   }
 
-  /* four corners, in order of preference: the plate reads best above and
-     left-aligned with the thing it names, which is where it has always sat. */
-  function corners(r, p, gap) {
+  /* UNITS. getBoundingClientRect() returns SCREEN pixels — the world sits
+     under a transform, so at 70% zoom a 100px box measures 70. getComputedStyle()
+     returns CSS pixels, untransformed. Every candidate box below is computed in
+     SCREEN px so it can be compared against obstacle rects and the frame rect,
+     and the offset is divided back by the scale on the way out, because
+     --hint-l is read inside the transform. Mixing the two put the roster's
+     plate across its own control: the plate's width came back unscaled and
+     overshot the arithmetic by 1/0.7 of itself. */
+  function corners(r, pw, ph, gap) {
     return [
-      { side: '',      dx: 0,             top: r.top - p.h - gap },
-      { side: '',      dx: r.width - p.w, top: r.top - p.h - gap },
-      { side: 'below', dx: 0,             top: r.bottom + gap },
-      { side: 'below', dx: r.width - p.w, top: r.bottom + gap },
+      { side: '',      beside: false, dx: 0,           top: r.top - ph - gap },
+      { side: '',      beside: false, dx: r.width - pw, top: r.top - ph - gap },
+      { side: 'below', beside: false, dx: 0,           top: r.bottom + gap },
+      { side: 'below', beside: false, dx: r.width - pw, top: r.bottom + gap },
       /* BESIDE IT. Above and below are both blocked on a frame whose control
          is boxed in vertically — a phone has its caption directly above and
-         the frame's own edge directly below — but a 1100px frame holding a
-         390px device has room either side. Without these two the engine had
-         no answer for any phone and the whole of section 2 went ring-only. */
-      { side: '',      dx: r.width + gap, top: r.top },
-      { side: '',      dx: -(p.w + gap),  top: r.top }
+         the frame's own edge directly below — but a wide frame holding a
+         narrow control has room either side. */
+      { side: '',      beside: true,  dx: r.width + gap, top: r.top },
+      { side: '',      beside: true,  dx: -(pw + gap),   top: r.top }
     ];
   }
 
-  function placeOne(el, frame, fr, rects, gap) {
+  function placeOne(el, frame, fr, rects, gap, sc) {
     var p = plateOf(el);
     if (!p) return false;
     var r = el.getBoundingClientRect();
-    var cand = corners(r, p, gap);
+    var pw = p.w * sc, ph = p.h * sc;
+    var cand = corners(r, pw, ph, gap);
     for (var i = 0; i < cand.length; i++) {
       var c = cand[i];
-      var box = { left: r.left + c.dx, top: c.top, right: r.left + c.dx + p.w, bottom: c.top + p.h };
+      var box = { left: r.left + c.dx, top: c.top, right: r.left + c.dx + pw, bottom: c.top + ph };
       if (box.left < fr.left || box.right > fr.right) continue;
       if (box.top < fr.top || box.bottom > fr.bottom) continue;
       if (hits(box, rects)) continue;
       if (c.side) el.setAttribute('data-hint', 'below');
       else el.removeAttribute('data-hint');
-      el.style.setProperty('--hint-l', Math.round(c.dx) + 'px');
+      el.style.setProperty('--hint-l', Math.round(c.dx / sc) + 'px');
       /* A side placement is the only one the stylesheet cannot express on its
          own: above/below are its two anchors, and beside-it needs the plate's
-         bottom pinned level with the control's top rather than above it. */
-      if (c.dx < 0 || c.dx > r.width - p.w + 1) {
+         bottom pinned level with the control's top rather than above it.
+         Read the candidate's own flag — NEVER re-derive it from dx. A
+         right-aligned plate has dx = width - plateWidth, which goes negative
+         whenever the plate is wider than the control it names, and a "dx < 0"
+         test then misread it as a side placement and pinned it level with the
+         control's top. That dropped "PUBLISH — THE HANDOFF" flat on top of
+         the Publish week button. */
+      if (c.beside) {
         el.style.setProperty('--hint-b', 'calc(100% - ' + Math.round(p.h) + 'px)');
       } else {
         el.style.removeProperty('--hint-b');
@@ -478,9 +501,9 @@
     return false;
   }
 
-  /* A phone's note is mounted into the caption head, which has slack below the
-     subtitle and nothing to collide with. See app.css §16 for why it cannot be
-     a pseudo-element on .phone. */
+  /* A phone's note is mounted into the caption head, which has measured slack
+     below the subtitle and nothing to collide with. See app.css for why it
+     cannot be a pseudo-element on .phone: that pseudo is the side button. */
   function mountNote(frame) {
     var ph = frame.querySelector('.phone[data-live-note]');
     var head = frame.querySelector('.zone__head');
@@ -533,7 +556,7 @@
     var placed = false;
     for (i = 0; i < cands.length; i++) {
       el = cands[i];
-      if (!placed && placeOne(el, frame, fr, obstacles(frame, el), gap)) {
+      if (!placed && placeOne(el, frame, fr, obstacles(frame, el), gap, sc)) {
         placed = true;
         continue;
       }
@@ -543,16 +566,25 @@
     }
   }
 
-  var placeQueued = false;
+  /* RE-ENTRANT, because a swallowed request is a silent miss. The old guard
+     dropped any call that arrived while a pass was already queued — and boot
+     draws thirty frames in a synchronous loop, so twenty-nine requests were
+     dropped and the one that ran measured frames that were later re-rendered,
+     wiping every --hint-l it had just set. The board then opened with the
+     plates back at their unplaced defaults, which is exactly what it looked
+     like. A request during a pass now marks it dirty and runs again. */
+  var placeQueued = false, placeDirty = false;
   function placeHints() {
-    if (placeQueued) return;
+    if (placeQueued) { placeDirty = true; return; }
     placeQueued = true;
     window.requestAnimationFrame(function () {
       placeQueued = false;
       var world = document.getElementById('art-world');
-      if (!world || world.className.indexOf('world--hints') === -1) return;
-      var frames = document.querySelectorAll('.world [id^="z-"]');
-      for (var i = 0; i < frames.length; i++) placeFrame(frames[i]);
+      if (world && world.className.indexOf('world--hints') !== -1) {
+        var frames = document.querySelectorAll('.world [id^="z-"]');
+        for (var i = 0; i < frames.length; i++) placeFrame(frames[i]);
+      }
+      if (placeDirty) { placeDirty = false; placeHints(); }
     });
   }
 
@@ -715,7 +747,12 @@
        walkthroughs, and then frames the `handoff` waypoint. It never fits the
        world — the board does not open zoomed out. */
     ART.canvas.init();
+    /* Twice: once now, and once after the opening camera move has settled.
+       init() frames the handoff waypoint with an animation, and a frame
+       measured mid-flight is measured against geometry the reader never
+       sees. */
     placeHints();
+    window.setTimeout(placeHints, 500);
   }
 
   if (document.readyState === 'loading') {

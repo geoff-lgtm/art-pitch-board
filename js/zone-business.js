@@ -463,8 +463,8 @@
 
        Engineering and tech stack  Geoff Hladik · FlipaClip + Cradle · 150M users
                       · WINNER, Apple App of the Year
-       Product and design  Lisa Debenedictis · Head of Product, Planet Fitness
-                      · 30 people · app + web
+       Product and design  Lisa Debenedictis · Head of Product, Planet Fitness,
+                      30 people · 15M daily active users · app + web
        An A.R.T. family   their son is a client of the practice, ~20 allergies;
                       they use the booklet daily and QA against it
 
@@ -483,6 +483,18 @@
      Both names live in NAMES below, so a correction is a one-line change — which
      is how 'Lisa' became 'Lisa Debenedictis' without touching the markup. */
 
+  /* Verified App Store listings, not marketing sites: the credential is the
+     app, so the link goes to the thing itself. Both open in a new tab — the
+     board is a pannable canvas and a reader who navigates away loses their
+     position on it. */
+  var APP_FLIPACLIP = 'https://apps.apple.com/us/app/flipaclip-draw-2d-animation/id1101848914';
+  var APP_CRADLE    = 'https://apps.apple.com/us/app/cradle-baby-tracker/id6764861171';
+
+  function applink(href, label) {
+    return '<a class="credlink" href="' + href + '" target="_blank" rel="noopener noreferrer">' +
+      '<strong>' + label + '</strong></a>';
+  }
+
   var NAMES = { built: 'Geoff Hladik', product: 'Lisa Debenedictis' };
 
   function team(root) {
@@ -490,8 +502,8 @@
       '<div class="team__col">' +
         '<p class="team__role">Engineering and tech stack</p>' +
         '<p class="team__name">' + esc(NAMES.built) + '</p>' +
-        '<p class="team__of">Built <strong>FlipaClip</strong> and ' +
-          '<strong>Cradle</strong>.</p>' +
+        '<p class="team__of">Built ' + applink(APP_FLIPACLIP, 'the FlipaClip app') +
+          ' and ' + applink(APP_CRADLE, 'the Cradle app') + '.</p>' +
         '<p class="team__figure">150 million<small>users</small></p>' +
         '<p class="team__award">Winner &middot; Apple App of the Year</p>' +
       '</div>';
@@ -501,8 +513,12 @@
         '<p class="team__role">Product and design</p>' +
         '<p class="team__name">' + esc(NAMES.product) + '</p>' +
         '<p class="team__of">Head of Product at ' +
-          '<strong>Planet Fitness</strong>.</p>' +
-        '<p class="team__figure">30<small>people in the organisation</small></p>' +
+          '<strong>Planet Fitness</strong>, leading 30 people.</p>' +
+        /* The figure is the REACH, which is what makes this column parallel
+           with the one beside it: 150 million against 15 million, two people
+           who have each built for a population. The 30 people moved up into
+           the line above — it is the scope of the role, not its scale. */
+        '<p class="team__figure">15 million<small>daily active users</small></p>' +
         '<p class="team__award">Built their app and web</p>' +
       '</div>';
 
