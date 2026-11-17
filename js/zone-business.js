@@ -305,9 +305,10 @@
   /* ====================================================== 2 · timeline ==== */
   /* A real schedule, and an honest one. Weeks 0–6 are numbered because the
      estimate is the builders' own and is attributed in the note. The six columns after
-     v1 carry a dot instead of a number: QA, the pilot and the testing tracks
-     run as long as the booklet says they need to, and store review is a queue
-     at Apple and Google. A numbered tail would be a date nobody can promise,
+     v1 carry a dot instead of a number: QA and the pilot run as long as the
+     booklet says they need to, and store review is a queue at Apple and
+     Google. Two tracks start inside the build and cross the gate — testing,
+     from the first installable build, and review shortly after it. A numbered tail would be a date nobody can promise,
      so the tail is a dashed bracket and one open-ended, chevroned bar. */
 
   /* The bars used to carry a caption inside them — "the data model", "our own
@@ -325,6 +326,14 @@
       sub: 'Weeks 1&ndash;2 &middot; the ramp editor', state: 'build', col: 2, span: 2 },
     { label: 'Family app &mdash; dosing, drops, tapping, prep',
       sub: 'Weeks 3&ndash;4 &middot; iOS and Android', state: 'build', col: 4, span: 2 },
+    /* TESTFLIGHT STARTS WHEN THERE IS A BUILD TO INSTALL, which is the week
+       the family app lands — not after v1. It was drawn as a one-week band
+       near the end, which is how a waterfall diagram imagines distribution
+       and not how shipping works: you put the app on a real device the day
+       it runs, and the track stays open from then until launch. */
+    { label: 'TestFlight and Play internal testing',
+      sub: 'From the first installable build',
+      state: 'qa', col: 5, span: 7 },
     { label: 'Meals, community, the review loop',
       sub: 'Week 5', state: 'build', col: 6, span: 1 },
     { label: 'Analytics and the owner dashboard',
@@ -335,12 +344,12 @@
     { label: 'Practitioner pilot',
       sub: 'One practitioner, real clients',
       state: 'qa', col: 9, span: 2 },
-    { label: 'TestFlight and Play internal testing',
-      sub: 'Before anything reaches a family',
-      state: 'qa', col: 10, span: 2 },
+    /* And review begins shortly after testing does, because a build that goes
+       out to testers is itself submitted. The queue is hit several times
+       before launch, not once at the end. */
     { label: 'Store review',
       sub: 'Apple&rsquo;s queue and Google&rsquo;s, not ours',
-      state: 'open', col: 11, span: 2 }
+      state: 'open', col: 8, span: 5 }
   ];
 
   /* The tail in words, because the chart deliberately refuses to number it.
@@ -350,10 +359,10 @@
       note: 'Overlaps the last build week: the booklet is already in the house.' },
     { label: 'Practitioner pilot', range: '2&ndash;3 weeks',
       note: 'A full weekly cycle each time.' },
-    { label: 'TestFlight and Play internal testing', range: 'About 1 week',
-      note: 'Runs alongside the pilot.' },
+    { label: 'TestFlight and Play internal testing', range: 'Week 4 onward',
+      note: 'Opens with the first installable build and stays open to launch.' },
     { label: 'Store review', range: 'Usually days',
-      note: '' }
+      note: 'Per submission, and the first goes in during testing.' }
   ];
 
   function planAxis() {
